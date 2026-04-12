@@ -11,7 +11,6 @@
 |------------|--------------|
 | Frontend   | Angular      |
 | Backend    | Django       |
-| Database   | PostgreSQL   |
 ---
 ## Group Members
 * Nagizbekova Aruzhan
