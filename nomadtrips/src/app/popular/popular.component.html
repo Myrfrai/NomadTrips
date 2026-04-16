@@ -1,0 +1,11 @@
+<section class="popular-hero">
+  <h2>{{ i18n.t('popular.title') }}</h2>
+  <p>{{ i18n.t('popular.subtitle') }}</p>
+</section>
+
+<section class="popular-grid">
+  <article class="popular-card" *ngFor="let card of cards">
+    <h3>{{ card.title[i18n.lang()] }}</h3>
+    <p>{{ card.text[i18n.lang()] }}</p>
+  </article>
+</section>

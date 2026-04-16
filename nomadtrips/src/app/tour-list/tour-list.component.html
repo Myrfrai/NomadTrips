@@ -1,0 +1,14 @@
+<section class="hero">
+  <h2>{{ i18n.t('tourList.title') }}</h2>
+  <p>{{ i18n.t('tourList.subtitle') }}</p>
+</section>
+
+<section class="tour-grid">
+  <article class="tour-card" *ngFor="let tour of tours">
+    <h3>{{ tour.name[i18n.lang()] }}</h3>
+    <p class="meta">{{ tour.location[i18n.lang()] }} | {{ tour.duration[i18n.lang()] }} | {{ tour.season[i18n.lang()] }}</p>
+    <p>{{ tour.description[i18n.lang()] }}</p>
+    <p class="price">{{ i18n.t('tourList.priceFrom') }} {{ tour.price }} тг</p>
+    <a class="details-btn" [routerLink]="['/tour', tour.id]">{{ i18n.t('tourList.detailsButton') }}</a>
+  </article>
+</section>

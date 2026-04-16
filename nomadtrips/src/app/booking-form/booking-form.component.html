@@ -1,0 +1,29 @@
+<h3>{{ i18n.t('booking.title') }}</h3>
+<form (ngSubmit)="onSubmit()">
+  <label>
+    {{ i18n.t('booking.name') }}
+    <input type="text" [(ngModel)]="name" name="name" required>
+  </label>
+
+  <label>
+    {{ i18n.t('booking.phone') }}
+    <input type="tel" [(ngModel)]="phone" name="phone" required>
+  </label>
+
+  <label>
+    {{ i18n.t('booking.people') }}
+    <input type="number" [(ngModel)]="people" name="people" min="1" required>
+  </label>
+
+  <label>
+    {{ i18n.t('booking.date') }}
+    <input type="date" [(ngModel)]="travelDate" name="travelDate" required>
+  </label>
+
+  <label>
+    {{ i18n.t('booking.comment') }}
+    <textarea [(ngModel)]="comment" name="comment" rows="3" [placeholder]="i18n.t('booking.commentPlaceholder')"></textarea>
+  </label>
+
+  <button type="submit">{{ i18n.t('booking.submit') }}</button>
+</form>

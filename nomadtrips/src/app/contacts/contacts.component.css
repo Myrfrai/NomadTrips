@@ -1,0 +1,15 @@
+.contacts-card {
+  border: 1px solid #dbe3ef;
+  border-radius: 12px;
+  background: #fff;
+  padding: 16px;
+}
+
+.contacts-card h2 {
+  margin: 0 0 8px;
+  color: #0f4c81;
+}
+
+.contacts-list {
+  margin-top: 12px;
+}

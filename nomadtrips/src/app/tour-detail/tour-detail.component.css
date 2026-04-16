@@ -1,0 +1,36 @@
+.detail-card {
+  border: 1px solid #dde3ea;
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 14px;
+  background: #ffffff;
+}
+
+h2 {
+  margin: 0 0 8px;
+  color: #0f4c81;
+}
+
+.detail-meta {
+  margin: 0 0 6px;
+  color: #4a5968;
+}
+
+.detail-price {
+  margin: 8px 0 10px;
+  font-weight: 700;
+}
+
+.booking-section {
+  border: 1px solid #d9e6ff;
+  background: #f6faff;
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 14px;
+}
+
+.back-link {
+  text-decoration: none;
+  color: #0f4c81;
+  font-weight: 600;
+}
