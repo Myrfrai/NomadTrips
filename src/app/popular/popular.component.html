@@ -1,0 +1,51 @@
+<section class="popular-hero section-card">
+  <div class="hero-copy">
+    <h1 class="section-title">{{ i18n.t('popular.title') }}</h1>
+    <p class="section-text">{{ i18n.t('popular.subtitle') }}</p>
+  </div>
+  <button class="primary-btn" type="button" (click)="loadPopular()">
+    {{ i18n.t('popular.refresh') }}
+  </button>
+</section>
+
+@if (error()) {
+  <p class="error-message">{{ error() }}</p>
+}
+
+@if (loading()) {
+  <div class="section-card empty-state">
+    <p class="section-text">{{ i18n.t('popular.loading') }}</p>
+  </div>
+} @else if (tours().length) {
+  <section class="popular-grid">
+    @for (tour of tours(); track tour.id) {
+      <article class="popular-card section-card">
+        <div class="popular-media">
+          <img [src]="tour.imageUrl" [alt]="i18n.localize(tour.imageAlt)" loading="lazy" />
+          <span class="hero-mark">{{ tour.heroLabel }}</span>
+        </div>
+        <h2>{{ i18n.localize(tour.name) }}</h2>
+        <p class="section-text">{{ i18n.localize(tour.summary) }}</p>
+        <p class="credit-line">
+          {{ i18n.t('shared.photo') }}:
+          <a [href]="tour.photoAttribution.sourceUrl" target="_blank" rel="noreferrer">
+            {{ tour.photoAttribution.author }}
+          </a>
+          ·
+          <a [href]="tour.photoAttribution.licenseUrl" target="_blank" rel="noreferrer">
+            {{ tour.photoAttribution.licenseLabel }}
+          </a>
+        </p>
+        <div class="meta">
+          <span>{{ i18n.localize(tour.region) }}</span>
+          <span>★ {{ tour.rating }}</span>
+        </div>
+        <a [routerLink]="['/tour', tour.id]">{{ i18n.t('popular.details') }}</a>
+      </article>
+    }
+  </section>
+} @else {
+  <div class="section-card empty-state">
+    <p class="section-text">{{ i18n.t('popular.empty') }}</p>
+  </div>
+}

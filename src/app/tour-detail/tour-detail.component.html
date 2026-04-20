@@ -1,0 +1,97 @@
+@if (error()) {
+  <p class="error-message">{{ error() }}</p>
+}
+
+@if (loading()) {
+  <section class="section-card placeholder">
+    <p class="section-text">{{ i18n.t('detail.loading') }}</p>
+  </section>
+} @else if (tour(); as activeTour) {
+  <section class="detail-layout">
+    <article class="tour-overview section-card">
+      <div class="hero-media">
+        <img [src]="activeTour.imageUrl" [alt]="i18n.localize(activeTour.imageAlt)" />
+        <div class="hero-banner">{{ activeTour.heroLabel }}</div>
+      </div>
+      <div class="overview-body">
+        <div class="credit-row">
+          <span>{{ i18n.t('shared.photo') }}:</span>
+          <a [href]="activeTour.photoAttribution.sourceUrl" target="_blank" rel="noreferrer">
+            {{ activeTour.photoAttribution.author }} / {{ activeTour.photoAttribution.sourceLabel }}
+          </a>
+          <span>·</span>
+          <a [href]="activeTour.photoAttribution.licenseUrl" target="_blank" rel="noreferrer">
+            {{ activeTour.photoAttribution.licenseLabel }}
+          </a>
+        </div>
+
+        <div class="heading-row">
+          <div>
+            <h1 class="section-title">{{ i18n.localize(activeTour.name) }}</h1>
+            <p class="section-text">{{ i18n.localize(activeTour.summary) }}</p>
+          </div>
+          <strong class="price-chip">{{ activeTour.price | number }} ₸</strong>
+        </div>
+
+        <div class="facts-grid">
+          <div>
+            <span>{{ i18n.t('detail.region') }}</span>
+            <strong>{{ i18n.localize(activeTour.region) }}</strong>
+          </div>
+          <div>
+            <span>{{ i18n.t('detail.departure') }}</span>
+            <strong>{{ i18n.localize(activeTour.departure) }}</strong>
+          </div>
+          <div>
+            <span>{{ i18n.t('detail.duration') }}</span>
+            <strong>{{ i18n.localize(activeTour.duration) }}</strong>
+          </div>
+          <div>
+            <span>{{ i18n.t('detail.rating') }}</span>
+            <strong>★ {{ activeTour.rating }}</strong>
+          </div>
+        </div>
+
+        <section class="info-block">
+          <h2>{{ i18n.t('detail.highlights') }}</h2>
+          <ul>
+            @for (item of activeTour.highlights; track item.en) {
+              <li>{{ i18n.localize(item) }}</li>
+            }
+          </ul>
+        </section>
+
+        <section class="info-block">
+          <h2>{{ i18n.t('detail.includes') }}</h2>
+          <ul>
+            @for (item of activeTour.includes; track item.en) {
+              <li>{{ i18n.localize(item) }}</li>
+            }
+          </ul>
+        </section>
+      </div>
+    </article>
+
+    <aside class="booking-panel section-card">
+      @if (auth.isAuthenticated()) {
+        <app-booking-form
+          [tourId]="activeTour.id"
+          [tourPrice]="activeTour.price"
+          [tourName]="i18n.localize(activeTour.name)"
+        ></app-booking-form>
+      } @else {
+        <div class="login-box">
+          <h2>{{ i18n.t('booking.title') }}</h2>
+          <p class="section-text">{{ i18n.t('detail.loginPrompt') }}</p>
+          <a class="primary-link" [routerLink]="['/login']">{{ i18n.t('detail.loginCta') }}</a>
+        </div>
+      }
+    </aside>
+  </section>
+
+  <a class="back-link" [routerLink]="['/']">{{ i18n.t('detail.back') }}</a>
+} @else {
+  <section class="section-card placeholder">
+    <p class="section-text">{{ i18n.t('detail.notFound') }}</p>
+  </section>
+}

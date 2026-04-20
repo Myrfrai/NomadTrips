@@ -1,0 +1,73 @@
+<section class="profile-head section-card">
+  <div>
+    <h1 class="section-title">{{ i18n.t('profile.title') }}</h1>
+    <p class="section-text">{{ i18n.t('profile.subtitle') }}</p>
+  </div>
+
+  <button class="secondary-btn" type="button" (click)="refreshDashboard()">
+    {{ i18n.t('profile.refresh') }}
+  </button>
+</section>
+
+<section class="profile-layout">
+  <aside class="profile-card section-card">
+    <h2>{{ auth.user()?.name }}</h2>
+    <p><strong>Email:</strong> {{ auth.user()?.email }}</p>
+    <p><strong>{{ i18n.t('profile.userRole') }}:</strong> {{ auth.user()?.role }}</p>
+  </aside>
+
+  <div class="bookings-column">
+    @if (success()) {
+      <p class="status-message">{{ success() }}</p>
+    }
+
+    @if (error()) {
+      <p class="error-message">{{ error() }}</p>
+    }
+
+    @if (loading()) {
+      <div class="section-card empty-card">
+        <p class="section-text">{{ i18n.t('home.loading') }}</p>
+      </div>
+    } @else if (bookings().length) {
+      <div class="booking-list">
+        @for (booking of bookings(); track booking.id) {
+          <article class="booking-card section-card">
+            <div class="booking-top">
+              <div>
+                <h3>{{ i18n.localize(booking.tourName) }}</h3>
+                <p>{{ i18n.t('status.' + booking.status) }}</p>
+              </div>
+              <strong>{{ booking.totalPrice | number }} ₸</strong>
+            </div>
+
+            <div class="booking-meta">
+              <span>{{ i18n.t('profile.bookingDate') }}: {{ booking.travelDate | date: 'mediumDate' }}</span>
+              <span>{{ i18n.t('profile.createdAt') }}: {{ booking.createdAt | date: 'mediumDate' }}</span>
+              <span>{{ i18n.t('booking.travelers') }}: {{ booking.travelers }}</span>
+            </div>
+
+            @if (booking.status !== 'cancelled') {
+              <button
+                class="secondary-btn"
+                type="button"
+                (click)="cancelBooking(booking.id)"
+                [disabled]="activeBookingId() === booking.id"
+              >
+                {{
+                  activeBookingId() === booking.id
+                    ? i18n.t('profile.cancelLoading')
+                    : i18n.t('profile.cancel')
+                }}
+              </button>
+            }
+          </article>
+        }
+      </div>
+    } @else {
+      <div class="section-card empty-card">
+        <p class="section-text">{{ i18n.t('profile.empty') }}</p>
+      </div>
+    }
+  </div>
+</section>

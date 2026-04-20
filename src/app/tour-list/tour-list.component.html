@@ -1,0 +1,113 @@
+<section class="hero-card section-card">
+  <div class="hero-copy">
+    <span class="eyebrow">{{ i18n.t('home.badge') }}</span>
+    <h1 class="section-title">{{ i18n.t('home.title') }}</h1>
+    <p class="section-text">{{ i18n.t('home.subtitle') }}</p>
+  </div>
+
+  <form class="filters field-grid" (ngSubmit)="applyFilters()">
+    <label>
+      {{ i18n.t('home.search') }}
+      <input type="text" name="search" [(ngModel)]="filters.search" />
+    </label>
+
+    <label>
+      {{ i18n.t('home.region') }}
+      <select name="region" [(ngModel)]="filters.region">
+        <option value="">{{ i18n.t('home.regions.all') }}</option>
+        <option value="almaty">{{ i18n.t('home.regions.almaty') }}</option>
+        <option value="akmola">{{ i18n.t('home.regions.akmola') }}</option>
+        <option value="turkestan">{{ i18n.t('home.regions.turkestan') }}</option>
+        <option value="mangystau">{{ i18n.t('home.regions.mangystau') }}</option>
+      </select>
+    </label>
+
+    <label>
+      {{ i18n.t('home.season') }}
+      <select name="season" [(ngModel)]="filters.season">
+        <option value="">{{ i18n.t('home.seasons.all') }}</option>
+        <option value="mid">{{ i18n.t('home.seasons.mid') }}</option>
+        <option value="all">{{ i18n.t('home.seasons.full') }}</option>
+      </select>
+    </label>
+
+    <label>
+      {{ i18n.t('home.maxPrice') }}
+      <input type="number" min="0" step="1000" name="maxPrice" [(ngModel)]="filters.maxPrice" />
+    </label>
+
+    <div class="filter-actions">
+      <button class="primary-btn" type="submit">{{ i18n.t('home.apply') }}</button>
+      <button class="secondary-btn" type="button" (click)="resetFilters()">
+        {{ i18n.t('home.reset') }}
+      </button>
+      <button class="secondary-btn" type="button" (click)="loadTours()">
+        {{ i18n.t('home.refresh') }}
+      </button>
+    </div>
+  </form>
+</section>
+
+<section class="results">
+  <div class="results-head">
+    <h2 class="section-title">{{ i18n.t('home.resultCount') }}</h2>
+    <span class="result-chip">{{ tours().length }}</span>
+  </div>
+
+  @if (error()) {
+    <p class="error-message">{{ error() }}</p>
+  }
+
+  @if (loading()) {
+    <div class="empty-card section-card">
+      <p class="section-text">{{ i18n.t('home.loading') }}</p>
+    </div>
+  } @else if (tours().length) {
+    <div class="tour-grid">
+      @for (tour of tours(); track tour.id) {
+        <article class="tour-card section-card">
+          <div class="card-media">
+            <img [src]="tour.imageUrl" [alt]="i18n.localize(tour.imageAlt)" loading="lazy" />
+            <div class="card-banner">{{ tour.heroLabel }}</div>
+          </div>
+          <div class="card-body">
+            <div class="card-head">
+              <div>
+                <h3>{{ i18n.localize(tour.name) }}</h3>
+                <p>{{ i18n.localize(tour.region) }}</p>
+              </div>
+              <span class="rating">★ {{ tour.rating }}</span>
+            </div>
+
+            <p class="section-text">{{ i18n.localize(tour.summary) }}</p>
+
+            <p class="credit-line">
+              {{ i18n.t('shared.photo') }}:
+              <a [href]="tour.photoAttribution.sourceUrl" target="_blank" rel="noreferrer">
+                {{ tour.photoAttribution.author }}
+              </a>
+              ·
+              <a [href]="tour.photoAttribution.licenseUrl" target="_blank" rel="noreferrer">
+                {{ tour.photoAttribution.licenseLabel }}
+              </a>
+            </p>
+
+            <div class="meta-grid">
+              <span>{{ i18n.t('home.duration') }}: {{ i18n.localize(tour.duration) }}</span>
+              <span>{{ i18n.t('home.season') }}: {{ i18n.localize(tour.season) }}</span>
+            </div>
+
+            <div class="card-footer">
+              <strong>{{ i18n.t('home.from') }} {{ tour.price | number }} ₸</strong>
+              <a class="details-link" [routerLink]="['/tour', tour.id]">{{ i18n.t('home.details') }}</a>
+            </div>
+          </div>
+        </article>
+      }
+    </div>
+  } @else {
+    <div class="empty-card section-card">
+      <p class="section-text">{{ i18n.t('home.empty') }}</p>
+    </div>
+  }
+</section>

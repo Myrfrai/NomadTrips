@@ -1,0 +1,176 @@
+.hero-card {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 20px;
+  padding: 24px;
+  margin-bottom: 22px;
+}
+
+.hero-copy {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+}
+
+.hero-copy h1 {
+  font-size: clamp(28px, 4vw, 44px);
+  line-height: 1.1;
+}
+
+.eyebrow {
+  display: inline-flex;
+  width: fit-content;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: #e5f0ff;
+  color: #0f4c81;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+.filters {
+  padding: 18px;
+  border-radius: 16px;
+  background: linear-gradient(180deg, #f6faff, #ffffff);
+  border: 1px solid #d9e6f5;
+}
+
+.filter-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.results {
+  display: grid;
+  gap: 14px;
+}
+
+.results-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.result-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 42px;
+  min-height: 42px;
+  border-radius: 50%;
+  background: #0f4c81;
+  color: #fff;
+  font-weight: 800;
+}
+
+.tour-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.tour-card {
+  overflow: hidden;
+}
+
+.card-media {
+  position: relative;
+  min-height: 220px;
+  background: #dbe8f6;
+}
+
+.card-media img {
+  display: block;
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+
+.card-banner {
+  position: absolute;
+  left: 16px;
+  top: 16px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(15, 76, 129, 0.88);
+  color: #fff;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  backdrop-filter: blur(8px);
+}
+
+.card-body {
+  display: grid;
+  gap: 14px;
+  padding: 20px;
+}
+
+.card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.card-head h3 {
+  margin: 0 0 4px;
+}
+
+.card-head p {
+  margin: 0;
+  color: #607286;
+}
+
+.rating {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #edf5ff;
+  color: #0f4c81;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.meta-grid {
+  display: grid;
+  gap: 8px;
+  color: #4d6073;
+  font-size: 14px;
+}
+
+.credit-line {
+  margin: 0;
+  color: #68798b;
+  font-size: 13px;
+}
+
+.credit-line a {
+  color: inherit;
+}
+
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.details-link {
+  text-decoration: none;
+  font-weight: 800;
+  color: #0f4c81;
+}
+
+.empty-card {
+  padding: 18px;
+}
+
+@media (max-width: 860px) {
+  .hero-card {
+    grid-template-columns: 1fr;
+  }
+}
