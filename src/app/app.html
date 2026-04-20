@@ -1,0 +1,95 @@
+<div class="site-shell">
+  <header class="topbar">
+    <div class="brand-block">
+      <a class="brand" [routerLink]="['/']">NomadTrips</a>
+      <p class="tagline">{{ i18n.t('site.tagline') }}</p>
+    </div>
+
+    <nav class="main-nav" aria-label="Основная навигация">
+      <a [routerLink]="['/']" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">
+        {{ i18n.t('nav.home') }}
+      </a>
+      <a
+        [routerLink]="['/popular']"
+        routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        {{ i18n.t('nav.popular') }}
+      </a>
+      <a
+        [routerLink]="['/contacts']"
+        routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        {{ i18n.t('nav.contacts') }}
+      </a>
+      @if (auth.isAuthenticated()) {
+        <a
+          [routerLink]="['/profile']"
+          routerLinkActive="active-link"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          {{ i18n.t('nav.profile') }}
+        </a>
+      }
+    </nav>
+
+    <div class="toolbar-actions">
+      <label class="language-switch" for="lang-select">
+        <span>{{ i18n.t('footer.language') }}</span>
+        <select id="lang-select" class="lang-select" [value]="i18n.lang()" (change)="onLanguageChange($event)">
+          <option value="ru">Русский</option>
+          <option value="kz">Қазақша</option>
+          <option value="en">English</option>
+        </select>
+      </label>
+
+      @if (auth.isAuthenticated()) {
+        <a
+          class="auth-link"
+          [routerLink]="['/profile']"
+          routerLinkActive="active-link"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          {{ currentUserName() || i18n.t('nav.profile') }}
+        </a>
+        <button type="button" class="ghost-btn" (click)="logout()">
+          {{ i18n.t('nav.logout') }}
+        </button>
+      } @else {
+        <a
+          class="auth-link"
+          [routerLink]="['/login']"
+          routerLinkActive="active-link"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          {{ i18n.t('nav.login') }}
+        </a>
+      }
+    </div>
+  </header>
+
+  <main class="content-wrap">
+    <router-outlet></router-outlet>
+  </main>
+
+  <footer class="footer-menu">
+    <section class="footer-card">
+      <h3>{{ i18n.t('footer.contacts') }}</h3>
+      <p>{{ i18n.t('footer.phone') }}: +7 (700) 123-45-67</p>
+      <p>{{ i18n.t('footer.email') }}: hello@nomadtrips.kz</p>
+      <p>{{ i18n.t('footer.address') }}: {{ i18n.t('footer.addressValue') }}</p>
+    </section>
+
+    <section class="footer-card">
+      <h3>{{ i18n.t('footer.stackTitle') }}</h3>
+      <p>{{ i18n.t('footer.stackText') }}</p>
+    </section>
+
+    <section class="footer-card">
+      <h3>{{ i18n.t('footer.demoTitle') }}</h3>
+      <p>{{ i18n.t('footer.demoText') }}</p>
+      <small>© {{ currentYear }} NomadTrips</small>
+    </section>
+  </footer>
+</div>

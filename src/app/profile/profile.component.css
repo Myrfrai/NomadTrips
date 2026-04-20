@@ -1,0 +1,82 @@
+.profile-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 22px;
+  margin-bottom: 18px;
+}
+
+.profile-layout {
+  display: grid;
+  grid-template-columns: minmax(240px, 0.7fr) minmax(0, 1.3fr);
+  gap: 18px;
+}
+
+.profile-card {
+  padding: 20px;
+  display: grid;
+  gap: 12px;
+  align-content: start;
+}
+
+.profile-card h2,
+.booking-card h3 {
+  margin: 0;
+  color: #123b63;
+}
+
+.profile-card p {
+  margin: 0;
+  color: #506274;
+}
+
+.bookings-column {
+  display: grid;
+  gap: 12px;
+}
+
+.booking-list {
+  display: grid;
+  gap: 14px;
+}
+
+.booking-card {
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+}
+
+.booking-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.booking-top p {
+  margin: 6px 0 0;
+  color: #5f7284;
+}
+
+.booking-meta {
+  display: grid;
+  gap: 8px;
+  color: #4d6073;
+  font-size: 14px;
+}
+
+.empty-card {
+  padding: 18px;
+}
+
+@media (max-width: 860px) {
+  .profile-head,
+  .booking-top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .profile-layout {
+    grid-template-columns: 1fr;
+  }
+}

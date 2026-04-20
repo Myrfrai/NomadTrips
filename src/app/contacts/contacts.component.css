@@ -1,0 +1,31 @@
+.contacts-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 18px;
+}
+
+.contacts-info,
+.contacts-form {
+  padding: 22px;
+}
+
+.contacts-info {
+  display: grid;
+  gap: 14px;
+}
+
+.contact-points {
+  display: grid;
+  gap: 10px;
+  color: #4d6073;
+}
+
+.contact-points p {
+  margin: 0;
+}
+
+@media (max-width: 860px) {
+  .contacts-layout {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,50 @@
+<section class="contacts-layout">
+  <article class="contacts-info section-card">
+    <h1 class="section-title">{{ i18n.t('contacts.title') }}</h1>
+    <p class="section-text">{{ i18n.t('contacts.subtitle') }}</p>
+
+    <div class="contact-points">
+      <p><strong>{{ i18n.t('footer.phone') }}:</strong> +7 (700) 123-45-67</p>
+      <p><strong>{{ i18n.t('footer.email') }}:</strong> hello@nomadtrips.kz</p>
+      <p><strong>{{ i18n.t('footer.address') }}:</strong> {{ i18n.t('footer.addressValue') }}</p>
+    </div>
+  </article>
+
+  <form class="contacts-form section-card field-grid" (ngSubmit)="submitContactRequest()">
+    @if (success()) {
+      <p class="status-message">{{ success() }}</p>
+    }
+
+    @if (error()) {
+      <p class="error-message">{{ error() }}</p>
+    }
+
+    <label>
+      {{ i18n.t('contacts.name') }}
+      <input type="text" name="name" [(ngModel)]="name" required />
+    </label>
+
+    <label>
+      {{ i18n.t('contacts.email') }}
+      <input type="email" name="email" [(ngModel)]="email" required />
+    </label>
+
+    <label>
+      {{ i18n.t('contacts.topic') }}
+      <select name="topic" [(ngModel)]="topic">
+        <option value="general">{{ i18n.t('contacts.topic.general') }}</option>
+        <option value="booking">{{ i18n.t('contacts.topic.booking') }}</option>
+        <option value="partnership">{{ i18n.t('contacts.topic.partnership') }}</option>
+      </select>
+    </label>
+
+    <label>
+      {{ i18n.t('contacts.message') }}
+      <textarea rows="6" name="message" [(ngModel)]="message" required></textarea>
+    </label>
+
+    <button class="primary-btn" type="submit" [disabled]="loading()">
+      {{ loading() ? i18n.t('contacts.loading') : i18n.t('contacts.submit') }}
+    </button>
+  </form>
+</section>

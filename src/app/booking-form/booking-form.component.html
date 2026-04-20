@@ -1,0 +1,53 @@
+<div class="booking-head">
+  <h2>{{ i18n.t('booking.title') }}</h2>
+  <p class="section-text">{{ i18n.t('booking.subtitle') }}</p>
+</div>
+
+@if (success()) {
+  <p class="status-message">{{ success() }}</p>
+}
+
+@if (error()) {
+  <p class="error-message">{{ error() }}</p>
+}
+
+<form class="field-grid" (ngSubmit)="submitBooking()">
+  <label>
+    {{ i18n.t('booking.name') }}
+    <input type="text" name="fullName" [(ngModel)]="fullName" required />
+  </label>
+
+  <label>
+    {{ i18n.t('booking.phone') }}
+    <input type="tel" name="phone" [(ngModel)]="phone" required />
+  </label>
+
+  <label>
+    {{ i18n.t('booking.travelers') }}
+    <input type="number" min="1" name="travelers" [(ngModel)]="travelers" required />
+  </label>
+
+  <label>
+    {{ i18n.t('booking.date') }}
+    <input type="date" name="travelDate" [(ngModel)]="travelDate" required />
+  </label>
+
+  <label>
+    {{ i18n.t('booking.comment') }}
+    <textarea
+      rows="4"
+      name="comment"
+      [(ngModel)]="comment"
+      [placeholder]="i18n.t('booking.commentPlaceholder')"
+    ></textarea>
+  </label>
+
+  <div class="summary-box">
+    <span>{{ i18n.t('booking.total') }}</span>
+    <strong>{{ estimatedTotal() | number }} ₸</strong>
+  </div>
+
+  <button class="primary-btn" type="submit" [disabled]="loading()">
+    {{ loading() ? i18n.t('booking.loading') : i18n.t('booking.submit') }}
+  </button>
+</form>
