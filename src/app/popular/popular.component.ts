@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
-import { getErrorMessage } from '../core/api-error.util';
+import { getErrorKey, getErrorMessage } from '../core/api-error.util';
 import { Tour } from '../core/api.models';
 import { I18nService } from '../i18n.service';
 import { ToursService } from '../tours.service';
@@ -20,7 +20,11 @@ export class PopularComponent implements OnInit {
 
   readonly tours = signal<Tour[]>([]);
   readonly loading = signal(false);
-  readonly error = signal('');
+  readonly errorKey = signal('');
+  readonly errorText = signal('');
+  readonly error = computed(() =>
+    this.errorKey() ? this.i18n.t(this.errorKey()) : this.errorText()
+  );
 
   ngOnInit(): void {
     this.loadPopular();
@@ -28,7 +32,8 @@ export class PopularComponent implements OnInit {
 
   loadPopular(): void {
     this.loading.set(true);
-    this.error.set('');
+    this.errorKey.set('');
+    this.errorText.set('');
 
     this.toursService.getPopularTours().subscribe({
       next: (tours) => {
@@ -36,7 +41,12 @@ export class PopularComponent implements OnInit {
         this.loading.set(false);
       },
       error: (error) => {
-        this.error.set(getErrorMessage(error, 'Не удалось загрузить популярные туры.'));
+        const key = getErrorKey(error);
+        if (key) {
+          this.errorKey.set(key);
+        } else {
+          this.errorText.set(getErrorMessage(error, this.i18n.t('errors.generic')));
+        }
         this.loading.set(false);
       }
     });

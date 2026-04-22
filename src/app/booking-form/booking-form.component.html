@@ -14,22 +14,46 @@
 <form class="field-grid" (ngSubmit)="submitBooking()">
   <label>
     {{ i18n.t('booking.name') }}
-    <input type="text" name="fullName" [(ngModel)]="fullName" required />
+    <input
+      type="text"
+      name="fullName"
+      [(ngModel)]="fullName"
+      required
+      minlength="2"
+      pattern="[A-Za-zА-Яа-яЁёҚқҒғҮүҰұӨөІіӘә\s-]+"
+      maxlength="60"
+    />
   </label>
 
   <label>
     {{ i18n.t('booking.phone') }}
-    <input type="tel" name="phone" [(ngModel)]="phone" required />
+    <input
+      type="tel"
+      name="phone"
+      [(ngModel)]="phone"
+      required
+      inputmode="numeric"
+      pattern="\+?\d+"
+      minlength="2"
+      maxlength="18"
+    />
   </label>
 
   <label>
     {{ i18n.t('booking.travelers') }}
-    <input type="number" min="1" name="travelers" [(ngModel)]="travelers" required />
+    <input
+      type="number"
+      min="1"
+      max="50"
+      name="travelers"
+      [(ngModel)]="travelers"
+      required
+    />
   </label>
 
   <label>
     {{ i18n.t('booking.date') }}
-    <input type="date" name="travelDate" [(ngModel)]="travelDate" required />
+    <input type="date" name="travelDate" [(ngModel)]="travelDate" [min]="minDate" required />
   </label>
 
   <label>
@@ -39,6 +63,7 @@
       name="comment"
       [(ngModel)]="comment"
       [placeholder]="i18n.t('booking.commentPlaceholder')"
+      maxlength="300"
     ></textarea>
   </label>
 

@@ -20,10 +20,12 @@
   <section class="popular-grid">
     @for (tour of tours(); track tour.id) {
       <article class="popular-card section-card">
-        <div class="popular-media">
-          <img [src]="tour.imageUrl" [alt]="i18n.localize(tour.imageAlt)" loading="lazy" />
-          <span class="hero-mark">{{ tour.heroLabel }}</span>
-        </div>
+        <a class="card-media-link" [routerLink]="['/tour', tour.id]">
+          <div class="popular-media">
+            <img [src]="tour.imageUrl" [alt]="i18n.localize(tour.imageAlt)" loading="lazy" />
+            <span class="hero-mark">{{ tour.heroLabel }}</span>
+          </div>
+        </a>
         <h2>{{ i18n.localize(tour.name) }}</h2>
         <p class="section-text">{{ i18n.localize(tour.summary) }}</p>
         <p class="credit-line">
