@@ -27,8 +27,8 @@ export class LoginComponent {
     this.errorKey() ? this.i18n.t(this.errorKey()) : this.errorText()
   );
 
-  email = 'traveler@nomadtrips.kz';
-  password = 'demo12345';
+  email = '';
+  password = '';
 
   submit(): void {
     this.loading.set(true);
