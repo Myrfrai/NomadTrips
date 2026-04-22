@@ -36,12 +36,12 @@ function jsonResponse<T>(body: T, status = 200): Observable<HttpEvent<T>> {
   return of(new HttpResponse({ status, body })).pipe(delay(350));
 }
 
-function errorResponse(status: number, message: string): Observable<never> {
+function errorResponse(status: number, message: string, messageKey = ''): Observable<never> {
   return throwError(
     () =>
       new HttpErrorResponse({
         status,
-        error: { message }
+        error: { message, messageKey }
       })
   );
 }
@@ -133,7 +133,7 @@ function filterTours(url: URL): Tour[] {
 
 function login(body: LoginCredentials | null): Observable<HttpEvent<AuthResponse>> {
   if (!body?.email || !body.password) {
-    return errorResponse(400, 'Введите email и пароль.');
+    return errorResponse(400, 'Введите email и пароль.', 'errors.loginRequired');
   }
 
   const user = DEMO_USERS.find(
@@ -143,7 +143,7 @@ function login(body: LoginCredentials | null): Observable<HttpEvent<AuthResponse
   );
 
   if (!user) {
-    return errorResponse(401, 'Неверные логин или пароль.');
+    return errorResponse(401, 'Неверные логин или пароль.', 'errors.invalidCredentials');
   }
 
   const profile: UserProfile = {
@@ -163,16 +163,16 @@ function login(body: LoginCredentials | null): Observable<HttpEvent<AuthResponse
 function createBooking(req: HttpRequest<unknown>, body: BookingRequest | null): Observable<HttpEvent<Booking>> {
   const user = getAuthorizedUser(req);
   if (!user) {
-    return errorResponse(401, 'Сначала войдите в аккаунт, чтобы забронировать тур.');
+    return errorResponse(401, 'Сначала войдите в аккаунт, чтобы забронировать тур.', 'errors.bookingAuth');
   }
 
   if (!body?.tourId || !body.fullName || !body.phone || !body.travelDate || !body.travelers) {
-    return errorResponse(400, 'Заполните обязательные поля формы бронирования.');
+    return errorResponse(400, 'Заполните обязательные поля формы бронирования.', 'errors.bookingRequired');
   }
 
   const tour = DEMO_TOURS.find((item) => item.id === body.tourId);
   if (!tour) {
-    return errorResponse(404, 'Тур не найден.');
+    return errorResponse(404, 'Тур не найден.', 'errors.tourNotFound');
   }
 
   const bookings = readBookings();
@@ -196,18 +196,18 @@ function createBooking(req: HttpRequest<unknown>, body: BookingRequest | null): 
 function cancelBooking(req: HttpRequest<unknown>, bookingId: number): Observable<HttpEvent<Booking>> {
   const user = getAuthorizedUser(req);
   if (!user) {
-    return errorResponse(401, 'Нужно авторизоваться.');
+    return errorResponse(401, 'Нужно авторизоваться.', 'errors.authRequired');
   }
 
   const bookings = readBookings();
   const booking = bookings.find((item) => item.id === bookingId);
 
   if (!booking) {
-    return errorResponse(404, 'Бронь не найдена.');
+    return errorResponse(404, 'Бронь не найдена.', 'errors.bookingNotFound');
   }
 
   if (booking.userId !== user.id) {
-    return errorResponse(403, 'Нельзя менять чужую бронь.');
+    return errorResponse(403, 'Нельзя менять чужую бронь.', 'errors.bookingForbidden');
   }
 
   const updatedBooking: Booking = { ...booking, status: 'cancelled' };
@@ -237,7 +237,7 @@ export const demoBackendInterceptor: HttpInterceptorFn = (
 
   if (req.method === 'GET' && path === `${API_BASE_URL}/auth/me`) {
     const user = getAuthorizedUser(req);
-    return user ? jsonResponse(user) : errorResponse(401, 'Сессия истекла. Войдите снова.');
+    return user ? jsonResponse(user) : errorResponse(401, 'Сессия истекла. Войдите снова.', 'errors.sessionExpired');
   }
 
   if (req.method === 'GET' && path === `${API_BASE_URL}/tours`) {
@@ -251,7 +251,7 @@ export const demoBackendInterceptor: HttpInterceptorFn = (
   if (req.method === 'GET' && /^\/api\/tours\/\d+$/.test(path)) {
     const tourId = Number(path.split('/').pop());
     const tour = DEMO_TOURS.find((item) => item.id === tourId);
-    return tour ? jsonResponse(tour) : errorResponse(404, 'Тур не найден.');
+    return tour ? jsonResponse(tour) : errorResponse(404, 'Тур не найден.', 'errors.tourNotFound');
   }
 
   if (req.method === 'POST' && path === `${API_BASE_URL}/bookings`) {

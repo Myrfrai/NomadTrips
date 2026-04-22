@@ -2,8 +2,8 @@
   display: grid;
   grid-template-columns: 1.2fr 1fr;
   gap: 20px;
-  padding: 24px;
-  margin-bottom: 22px;
+  padding: 20px;
+  margin-bottom: 18px;
 }
 
 .hero-copy {
@@ -13,28 +13,26 @@
 }
 
 .hero-copy h1 {
-  font-size: clamp(28px, 4vw, 44px);
-  line-height: 1.1;
+  font-size: clamp(24px, 3.2vw, 36px);
+  line-height: 1.2;
 }
 
 .eyebrow {
   display: inline-flex;
   width: fit-content;
-  padding: 8px 12px;
-  border-radius: 999px;
-  background: #e5f0ff;
-  color: #0f4c81;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: #eeeeee;
+  color: #2b2b2b;
+  font-weight: 600;
   font-size: 12px;
 }
 
 .filters {
-  padding: 18px;
-  border-radius: 16px;
-  background: linear-gradient(180deg, #f6faff, #ffffff);
-  border: 1px solid #d9e6f5;
+  padding: 16px;
+  border-radius: 6px;
+  background: #f5f5f5;
+  border: 1px solid #d4d4d4;
 }
 
 .filter-actions {
@@ -61,10 +59,10 @@
   justify-content: center;
   min-width: 42px;
   min-height: 42px;
-  border-radius: 50%;
-  background: #0f4c81;
+  border-radius: 4px;
+  background: #2f4b6e;
   color: #fff;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .tour-grid {
@@ -77,10 +75,16 @@
   overflow: hidden;
 }
 
+.card-media-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
 .card-media {
   position: relative;
   min-height: 220px;
-  background: #dbe8f6;
+  background: #e3e3e3;
 }
 
 .card-media img {
@@ -94,14 +98,11 @@
   position: absolute;
   left: 16px;
   top: 16px;
-  padding: 10px 14px;
-  border-radius: 999px;
-  background: rgba(15, 76, 129, 0.88);
+  padding: 6px 10px;
+  border-radius: 4px;
+  background: rgba(47, 75, 110, 0.9);
   color: #fff;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  backdrop-filter: blur(8px);
+  font-weight: 600;
 }
 
 .card-body {
@@ -127,11 +128,11 @@
 }
 
 .rating {
-  padding: 6px 10px;
-  border-radius: 999px;
-  background: #edf5ff;
-  color: #0f4c81;
-  font-weight: 800;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: #efefef;
+  color: #2b2b2b;
+  font-weight: 600;
   white-space: nowrap;
 }
 
@@ -161,8 +162,8 @@
 
 .details-link {
   text-decoration: none;
-  font-weight: 800;
-  color: #0f4c81;
+  font-weight: 600;
+  color: #2f4b6e;
 }
 
 .empty-card {

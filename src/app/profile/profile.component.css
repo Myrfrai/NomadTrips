@@ -23,12 +23,12 @@
 .profile-card h2,
 .booking-card h3 {
   margin: 0;
-  color: #123b63;
+  color: #2b2b2b;
 }
 
 .profile-card p {
   margin: 0;
-  color: #506274;
+  color: #5a5a5a;
 }
 
 .bookings-column {
@@ -55,13 +55,13 @@
 
 .booking-top p {
   margin: 6px 0 0;
-  color: #5f7284;
+  color: #5a5a5a;
 }
 
 .booking-meta {
   display: grid;
   gap: 8px;
-  color: #4d6073;
+  color: #5a5a5a;
   font-size: 14px;
 }
 

@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { AuthService } from '../auth.service';
-import { getErrorMessage } from '../core/api-error.util';
+import { getErrorKey, getErrorMessage } from '../core/api-error.util';
 import { I18nService } from '../i18n.service';
 
 @Component({
@@ -21,14 +21,19 @@ export class LoginComponent {
   private readonly route = inject(ActivatedRoute);
 
   readonly loading = signal(false);
-  readonly error = signal('');
+  readonly errorKey = signal('');
+  readonly errorText = signal('');
+  readonly error = computed(() =>
+    this.errorKey() ? this.i18n.t(this.errorKey()) : this.errorText()
+  );
 
   email = 'traveler@nomadtrips.kz';
   password = 'demo12345';
 
   submit(): void {
     this.loading.set(true);
-    this.error.set('');
+    this.errorKey.set('');
+    this.errorText.set('');
 
     this.auth.login({ email: this.email, password: this.password }).subscribe({
       next: () => {
@@ -37,7 +42,12 @@ export class LoginComponent {
         this.loading.set(false);
       },
       error: (error) => {
-        this.error.set(getErrorMessage(error, 'Не удалось войти в аккаунт.'));
+        const key = getErrorKey(error);
+        if (key) {
+          this.errorKey.set(key);
+        } else {
+          this.errorText.set(getErrorMessage(error, this.i18n.t('errors.generic')));
+        }
         this.loading.set(false);
       }
     });

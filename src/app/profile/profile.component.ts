@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { catchError, of } from 'rxjs';
 
 import { AuthService } from '../auth.service';
-import { getErrorMessage } from '../core/api-error.util';
+import { getErrorKey, getErrorMessage } from '../core/api-error.util';
 import { Booking } from '../core/api.models';
 import { I18nService } from '../i18n.service';
 import { ToursService } from '../tours.service';
@@ -22,7 +22,11 @@ export class ProfileComponent implements OnInit {
 
   readonly bookings = signal<Booking[]>([]);
   readonly loading = signal(false);
-  readonly error = signal('');
+  readonly errorKey = signal('');
+  readonly errorText = signal('');
+  readonly error = computed(() =>
+    this.errorKey() ? this.i18n.t(this.errorKey()) : this.errorText()
+  );
   readonly success = signal('');
   readonly activeBookingId = signal<number | null>(null);
 
@@ -32,7 +36,8 @@ export class ProfileComponent implements OnInit {
 
   refreshDashboard(): void {
     this.loading.set(true);
-    this.error.set('');
+    this.errorKey.set('');
+    this.errorText.set('');
     this.success.set('');
 
     this.auth
@@ -46,7 +51,12 @@ export class ProfileComponent implements OnInit {
         this.loading.set(false);
       },
       error: (error) => {
-        this.error.set(getErrorMessage(error, 'Не удалось загрузить личный кабинет.'));
+        const key = getErrorKey(error);
+        if (key) {
+          this.errorKey.set(key);
+        } else {
+          this.errorText.set(getErrorMessage(error, this.i18n.t('errors.generic')));
+        }
         this.loading.set(false);
       }
     });
@@ -54,7 +64,8 @@ export class ProfileComponent implements OnInit {
 
   cancelBooking(bookingId: number): void {
     this.activeBookingId.set(bookingId);
-    this.error.set('');
+    this.errorKey.set('');
+    this.errorText.set('');
     this.success.set('');
 
     this.toursService.cancelBooking(bookingId).subscribe({
@@ -66,7 +77,12 @@ export class ProfileComponent implements OnInit {
         this.activeBookingId.set(null);
       },
       error: (error) => {
-        this.error.set(getErrorMessage(error, 'Не удалось отменить бронь.'));
+        const key = getErrorKey(error);
+        if (key) {
+          this.errorKey.set(key);
+        } else {
+          this.errorText.set(getErrorMessage(error, this.i18n.t('errors.generic')));
+        }
         this.activeBookingId.set(null);
       }
     });

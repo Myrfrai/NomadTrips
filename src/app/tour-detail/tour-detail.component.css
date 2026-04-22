@@ -13,7 +13,7 @@
 .hero-media {
   position: relative;
   min-height: 320px;
-  background: #dfeaf6;
+  background: #e3e3e3;
 }
 
 .hero-media img {
@@ -27,14 +27,11 @@
   position: absolute;
   left: 20px;
   top: 20px;
-  padding: 11px 15px;
-  border-radius: 999px;
-  background: rgba(15, 76, 129, 0.88);
+  padding: 6px 10px;
+  border-radius: 4px;
+  background: rgba(47, 75, 110, 0.9);
   color: #fff;
-  font-weight: 800;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  backdrop-filter: blur(8px);
+  font-weight: 600;
 }
 
 .overview-body {
@@ -63,10 +60,10 @@
 }
 
 .price-chip {
-  padding: 10px 14px;
-  border-radius: 999px;
-  background: #e5f0ff;
-  color: #0f4c81;
+  padding: 6px 10px;
+  border-radius: 4px;
+  background: #efefef;
+  color: #2b2b2b;
   white-space: nowrap;
 }
 
@@ -79,10 +76,10 @@
 .facts-grid div {
   display: grid;
   gap: 4px;
-  padding: 12px;
-  border-radius: 14px;
-  background: #f7fbff;
-  border: 1px solid #dde7f2;
+  padding: 10px;
+  border-radius: 4px;
+  background: #f5f5f5;
+  border: 1px solid #d4d4d4;
 }
 
 .facts-grid span {
@@ -98,7 +95,7 @@
 .info-block h2 {
   margin: 0;
   font-size: 18px;
-  color: #123b63;
+  color: #2b2b2b;
 }
 
 .info-block ul {
@@ -106,7 +103,7 @@
   padding-left: 18px;
   display: grid;
   gap: 8px;
-  color: #415469;
+  color: #4b4b4b;
 }
 
 .booking-panel {
@@ -121,13 +118,13 @@
 
 .login-box h2 {
   margin: 0;
-  color: #0f4c81;
+  color: #2b2b2b;
 }
 
 .primary-link,
 .back-link {
-  color: #0f4c81;
-  font-weight: 800;
+  color: #2f4b6e;
+  font-weight: 600;
   text-decoration: none;
 }
 

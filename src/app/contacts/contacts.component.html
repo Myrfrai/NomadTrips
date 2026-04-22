@@ -21,7 +21,15 @@
 
     <label>
       {{ i18n.t('contacts.name') }}
-      <input type="text" name="name" [(ngModel)]="name" required />
+      <input
+        type="text"
+        name="name"
+        [(ngModel)]="name"
+        required
+        minlength="2"
+        maxlength="60"
+        pattern="[A-Za-zА-Яа-яЁёҚқҒғҮүҰұӨөІіӘә\s-]+"
+      />
     </label>
 
     <label>
@@ -40,7 +48,14 @@
 
     <label>
       {{ i18n.t('contacts.message') }}
-      <textarea rows="6" name="message" [(ngModel)]="message" required></textarea>
+      <textarea
+        rows="6"
+        name="message"
+        [(ngModel)]="message"
+        required
+        minlength="10"
+        maxlength="300"
+      ></textarea>
     </label>
 
     <button class="primary-btn" type="submit" [disabled]="loading()">

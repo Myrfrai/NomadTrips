@@ -66,10 +66,12 @@
     <div class="tour-grid">
       @for (tour of tours(); track tour.id) {
         <article class="tour-card section-card">
-          <div class="card-media">
-            <img [src]="tour.imageUrl" [alt]="i18n.localize(tour.imageAlt)" loading="lazy" />
-            <div class="card-banner">{{ tour.heroLabel }}</div>
-          </div>
+          <a class="card-media-link" [routerLink]="['/tour', tour.id]">
+            <div class="card-media">
+              <img [src]="tour.imageUrl" [alt]="i18n.localize(tour.imageAlt)" loading="lazy" />
+              <div class="card-banner">{{ tour.heroLabel }}</div>
+            </div>
+          </a>
           <div class="card-body">
             <div class="card-head">
               <div>
