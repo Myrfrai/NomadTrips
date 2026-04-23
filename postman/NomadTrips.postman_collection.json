@@ -138,7 +138,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"manager@nomadtrips.kz\",\n  \"password\": \"demo12345\"\n}"
+              "raw": "{\n  \"email\": \"di_tulegen@kbtu.kz\",\n  \"password\": \"demo12345\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/auth/login",
@@ -164,7 +164,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"email\": \"manager@nomadtrips.kz\",\n  \"password\": \"demo12345\"\n}"
+                  "raw": "{\n  \"email\": \"di_tulegen@kbtu.kz\",\n  \"password\": \"demo12345\"\n}"
                 },
                 "url": {
                   "raw": "{{baseUrl}}/auth/login",
@@ -187,7 +187,7 @@
                 }
               ],
               "cookie": [],
-              "body": "{\n  \"access\": \"<jwt-access-token>\",\n  \"refresh\": \"<jwt-refresh-token>\",\n  \"user\": {\n    \"id\": 2,\n    \"name\": \"Dias Tulegen\",\n    \"email\": \"manager@nomadtrips.kz\",\n    \"role\": \"manager\"\n  }\n}"
+              "body": "{\n  \"access\": \"<jwt-access-token>\",\n  \"refresh\": \"<jwt-refresh-token>\",\n  \"user\": {\n    \"id\": 2,\n    \"name\": \"Di Tulegen\",\n    \"email\": \"di_tulegen@kbtu.kz\",\n    \"role\": \"traveler\"\n  }\n}"
             }
           ]
         },
@@ -244,7 +244,7 @@
                 }
               ],
               "cookie": [],
-              "body": "{\n  \"id\": 2,\n  \"name\": \"Dias Tulegen\",\n  \"email\": \"manager@nomadtrips.kz\",\n  \"role\": \"manager\"\n}"
+              "body": "{\n  \"id\": 2,\n  \"name\": \"Di Tulegen\",\n  \"email\": \"di_tulegen@kbtu.kz\",\n  \"role\": \"traveler\"\n}"
             }
           ]
         },

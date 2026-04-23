@@ -1,6 +1,4 @@
 from django.contrib.auth import authenticate, get_user_model
-from django.contrib.auth.password_validation import validate_password
-from django.core.exceptions import ValidationError as DjangoValidationError
 from rest_framework import serializers
 
 from .models import Booking, ContactRequest, Destination, Tour
@@ -50,13 +48,6 @@ class RegisterSerializer(serializers.Serializer):
         if User.objects.filter(email__iexact=email).exists():
             raise serializers.ValidationError("A user with this email already exists")
         return email
-
-    def validate_password(self, value):
-        try:
-            validate_password(value)
-        except DjangoValidationError as exc:
-            raise serializers.ValidationError(list(exc.messages)) from exc
-        return value
 
     def create(self, validated_data):
         name = validated_data["name"].strip()
@@ -188,6 +179,13 @@ class TourSerializer(serializers.ModelSerializer):
 
 
 class TourWriteSerializer(serializers.ModelSerializer):
+    destination = serializers.PrimaryKeyRelatedField(
+        queryset=Destination.objects.all(),
+        required=False,
+        allow_null=True,
+    )
+    destination_name = serializers.CharField(write_only=True, required=False, allow_blank=True, max_length=120)
+    destination_description = serializers.CharField(write_only=True, required=False, allow_blank=True)
     slug = serializers.SlugField(min_length=3, max_length=180)
     title = serializers.CharField(min_length=3, max_length=180)
     summary = serializers.CharField(required=False, allow_blank=True, max_length=1200)
@@ -204,6 +202,8 @@ class TourWriteSerializer(serializers.ModelSerializer):
         model = Tour
         fields = [
             "destination",
+            "destination_name",
+            "destination_description",
             "slug",
             "title",
             "summary",
@@ -218,6 +218,52 @@ class TourWriteSerializer(serializers.ModelSerializer):
             "image_url",
             "is_published",
         ]
+
+    def validate(self, attrs):
+        destination = attrs.get("destination")
+        destination_name = attrs.get("destination_name", "").strip()
+
+        if destination is None and not destination_name:
+            raise serializers.ValidationError(
+                {
+                    "destination": "Provide destination id or fill destination name."
+                }
+            )
+
+        return attrs
+
+    def _resolve_destination(self, validated_data):
+        destination = validated_data.pop("destination", None)
+        destination_name = validated_data.pop("destination_name", "").strip()
+        destination_description = validated_data.pop("destination_description", "").strip()
+
+        if destination is not None:
+            return destination
+
+        destination, created = Destination.objects.get_or_create(
+            name=destination_name,
+            country="Kazakhstan",
+            defaults={"description": destination_description},
+        )
+
+        if destination_description and not destination.description:
+            destination.description = destination_description
+            destination.save(update_fields=["description"])
+
+        return destination
+
+    def create(self, validated_data):
+        validated_data["destination"] = self._resolve_destination(validated_data)
+        return super().create(validated_data)
+
+    def update(self, instance, validated_data):
+        if (
+            "destination" in validated_data
+            or "destination_name" in validated_data
+            or "destination_description" in validated_data
+        ):
+            validated_data["destination"] = self._resolve_destination(validated_data)
+        return super().update(instance, validated_data)
 
 
 class BookingSerializer(serializers.ModelSerializer):

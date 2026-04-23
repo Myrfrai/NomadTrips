@@ -108,7 +108,9 @@ export interface AuthResponse {
 }
 
 export interface TourWritePayload {
-  destination: number;
+  destination?: number | null;
+  destination_name?: string;
+  destination_description?: string;
   slug: string;
   title: string;
   summary: string;

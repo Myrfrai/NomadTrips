@@ -1,14 +1,7 @@
 <section class="profile-head section-card">
   <div>
     <h1 class="section-title">{{ i18n.t('profile.title') }}</h1>
-    <p class="section-text">
-      {{ isAdmin() ? 'Здесь можно управлять турами без Postman: токен подставляется автоматически.' : i18n.t('profile.subtitle') }}
-    </p>
   </div>
-
-  <button class="secondary-btn" type="button" (click)="refreshDashboard()">
-    {{ i18n.t('profile.refresh') }}
-  </button>
 </section>
 
 <section class="profile-layout">
@@ -16,9 +9,6 @@
     <h2>{{ auth.user()?.name }}</h2>
     <p><strong>Email:</strong> {{ auth.user()?.email }}</p>
     <p><strong>{{ i18n.t('profile.userRole') }}:</strong> {{ auth.user()?.role }}</p>
-    @if (isAdmin()) {
-      <p class="admin-note">Админские кнопки работают через JWT из текущей сессии, поэтому Postman больше не нужен для обычной работы в кабинете.</p>
-    }
   </aside>
 
   <div class="bookings-column">
@@ -39,108 +29,114 @@
         <section class="section-card admin-section">
           <div class="admin-head">
             <div>
-              <h2>Управление турами</h2>
-              <p class="section-text">Создание, редактирование и удаление туров доступно прямо отсюда.</p>
+              <h2>{{ i18n.t('admin.manageTours') }}</h2>
+              <p class="section-text">{{ i18n.t('admin.manageToursText') }}</p>
             </div>
-            <button class="secondary-btn" type="button" (click)="resetTourForm()">Новый тур</button>
+            <button class="secondary-btn" type="button" (click)="resetTourForm()">
+              {{ i18n.t('admin.newTour') }}
+            </button>
           </div>
 
           <form class="field-grid admin-form" (ngSubmit)="submitTour()">
             <label>
-              Название
+              {{ i18n.t('admin.title') }}
               <input type="text" name="title" [(ngModel)]="tourForm.title" required />
             </label>
 
             <label>
-              Slug
+              {{ i18n.t('admin.slug') }}
               <input type="text" name="slug" [(ngModel)]="tourForm.slug" required />
             </label>
 
             <label>
-              Направление
-              <select name="destination" [(ngModel)]="tourForm.destination" required>
-                @for (destination of destinations(); track destination.id) {
-                  <option [ngValue]="destination.id">
-                    {{ destination.name }} ({{ destination.country }})
-                  </option>
-                }
-              </select>
+              {{ i18n.t('admin.destinationName') }}
+              <input type="text" name="destination_name" [(ngModel)]="tourForm.destination_name" />
             </label>
 
             <label>
-              Регион
-              <select name="region_key" [(ngModel)]="tourForm.region_key">
-                <option value="almaty">Almaty</option>
-                <option value="akmola">Akmola</option>
-                <option value="turkestan">Turkestan</option>
-                <option value="mangystau">Mangystau</option>
-              </select>
+              {{ i18n.t('admin.destinationDescription') }}
+              <input type="text" name="destination_description" [(ngModel)]="tourForm.destination_description" />
             </label>
 
             <label>
-              Сезон
-              <select name="season_key" [(ngModel)]="tourForm.season_key">
-                <option value="mid">Spring / Autumn</option>
-                <option value="all">All year</option>
-              </select>
+              {{ i18n.t('admin.regionKey') }}
+              <input type="text" name="region_key" [(ngModel)]="tourForm.region_key" required />
             </label>
 
             <label>
-              Город выезда
+              {{ i18n.t('admin.seasonKey') }}
+              <input type="text" name="season_key" [(ngModel)]="tourForm.season_key" required />
+            </label>
+
+            <label>
+              {{ i18n.t('admin.departureCity') }}
               <input type="text" name="departure_city" [(ngModel)]="tourForm.departure_city" required />
             </label>
 
             <label>
-              Длительность
+              {{ i18n.t('admin.durationText') }}
               <input type="text" name="duration_text" [(ngModel)]="tourForm.duration_text" required />
             </label>
 
             <label>
-              Цена
+              {{ i18n.t('admin.price') }}
               <input type="number" min="0" step="1000" name="price" [(ngModel)]="tourForm.price" required />
             </label>
 
             <label>
-              Рейтинг
+              {{ i18n.t('admin.rating') }}
               <input type="number" min="0" max="5" step="0.1" name="rating" [(ngModel)]="tourForm.rating" required />
             </label>
 
             <label>
-              Hero label
+              {{ i18n.t('admin.heroLabel') }}
               <input type="text" name="hero_label" [(ngModel)]="tourForm.hero_label" required />
             </label>
 
             <label>
-              Картинка
-              <input type="text" name="image_url" [(ngModel)]="tourForm.image_url" placeholder="/images/tours/charyn-canyon.jpg" />
+              {{ i18n.t('admin.imageUrl') }}
+              <input
+                type="text"
+                name="image_url"
+                [(ngModel)]="tourForm.image_url"
+                placeholder="/images/tours/charyn-canyon.jpg"
+              />
             </label>
 
             <label class="wide-field">
-              Описание
+              {{ i18n.t('admin.summary') }}
               <textarea name="summary" rows="4" [(ngModel)]="tourForm.summary"></textarea>
             </label>
 
             <label class="checkbox-field">
               <input type="checkbox" name="popular" [(ngModel)]="tourForm.popular" />
-              Популярный тур
+              {{ i18n.t('admin.popular') }}
             </label>
 
             <label class="checkbox-field">
               <input type="checkbox" name="is_published" [(ngModel)]="tourForm.is_published" />
-              Опубликован
+              {{ i18n.t('admin.published') }}
             </label>
 
             <div class="filter-actions wide-field">
               <button class="primary-btn" type="submit" [disabled]="savingTour()">
-                {{ savingTour() ? 'Сохраняем...' : tourForm.id ? 'Сохранить изменения' : 'Создать тур' }}
+                {{
+                  savingTour()
+                    ? i18n.t('admin.saving')
+                    : tourForm.id
+                      ? i18n.t('admin.saveChanges')
+                      : i18n.t('admin.createTour')
+                }}
               </button>
-              <button class="secondary-btn" type="button" (click)="resetTourForm()">Очистить форму</button>
+              <button class="secondary-btn" type="button" (click)="resetTourForm()">
+                {{ i18n.t('admin.clearForm') }}
+              </button>
             </div>
           </form>
         </section>
 
         <section class="section-card admin-section">
-          <h2>Текущие туры</h2>
+          <h2>{{ i18n.t('admin.currentTours') }}</h2>
           <div class="booking-list">
             @for (tour of adminTours(); track tour.id) {
               <article class="booking-card section-card compact-card">
@@ -153,20 +149,25 @@
                 </div>
 
                 <div class="booking-meta">
-                  <span>Бронирований: {{ tour.bookingsCount }}</span>
-                  <span>Статус: {{ tour.isPublished ? 'опубликован' : 'черновик' }}</span>
-                  <span>Владелец: {{ tour.owner.email }}</span>
+                  <span>{{ i18n.t('admin.bookingsCount') }}: {{ tour.bookingsCount }}</span>
+                  <span>
+                    {{ i18n.t('admin.status') }}:
+                    {{ tour.isPublished ? i18n.t('admin.publishedValue') : i18n.t('admin.draftValue') }}
+                  </span>
+                  <span>{{ i18n.t('admin.owner') }}: {{ tour.owner.email }}</span>
                 </div>
 
                 <div class="card-actions">
-                  <button class="secondary-btn" type="button" (click)="editTour(tour)">Редактировать</button>
+                  <button class="secondary-btn" type="button" (click)="editTour(tour)">
+                    {{ i18n.t('admin.edit') }}
+                  </button>
                   <button
                     class="secondary-btn danger-btn"
                     type="button"
                     (click)="deleteTour(tour.id)"
                     [disabled]="deletingTourId() === tour.id"
                   >
-                    {{ deletingTourId() === tour.id ? 'Удаляем...' : 'Удалить' }}
+                    {{ deletingTourId() === tour.id ? i18n.t('admin.deleting') : i18n.t('admin.delete') }}
                   </button>
                 </div>
               </article>
@@ -175,14 +176,14 @@
         </section>
 
         <section class="section-card admin-section">
-          <h2>Пользователи</h2>
+          <h2>{{ i18n.t('admin.users') }}</h2>
           <div class="user-grid">
             @for (user of adminUsers(); track user.id) {
               <article class="user-card">
                 <strong>{{ user.email || user.username }}</strong>
-                <span>Роль: {{ user.role }}</span>
-                <span>Своих туров: {{ user.ownedTours.length }}</span>
-                <span>Бронирований: {{ user.bookedTours.length }}</span>
+                <span>{{ i18n.t('admin.role') }}: {{ user.role }}</span>
+                <span>{{ i18n.t('admin.ownedTours') }}: {{ user.ownedTours.length }}</span>
+                <span>{{ i18n.t('admin.userBookings') }}: {{ user.bookedTours.length }}</span>
               </article>
             }
           </div>
@@ -191,7 +192,7 @@
 
       @if (bookings().length) {
         <section class="section-card admin-section">
-          <h2>Мои бронирования</h2>
+          <h2>{{ i18n.t('admin.myBookings') }}</h2>
           <div class="booking-list">
             @for (booking of bookings(); track booking.id) {
               <article class="booking-card section-card">

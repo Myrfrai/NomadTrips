@@ -18,6 +18,8 @@ import { ToursService } from '../tours.service';
 interface TourFormModel {
   id: number | null;
   destination: number | null;
+  destination_name: string;
+  destination_description: string;
   slug: string;
   title: string;
   summary: string;
@@ -36,13 +38,15 @@ interface TourFormModel {
 const createTourForm = (): TourFormModel => ({
   id: null,
   destination: null,
+  destination_name: '',
+  destination_description: '',
   slug: '',
   title: '',
   summary: '',
-  region_key: 'almaty',
-  season_key: 'mid',
-  duration_text: '2 days / 1 night',
-  departure_city: 'Almaty',
+  region_key: '',
+  season_key: '',
+  duration_text: '',
+  departure_city: '',
   price: 0,
   rating: 4.8,
   popular: false,
@@ -85,6 +89,10 @@ export class ProfileComponent implements OnInit {
     this.refreshDashboard();
   }
 
+  private t(key: string): string {
+    return this.i18n.t(key);
+  }
+
   refreshDashboard(): void {
     this.loading.set(true);
     this.errorKey.set('');
@@ -115,11 +123,6 @@ export class ProfileComponent implements OnInit {
         this.adminTours.set(
           'adminTours' in response ? (response.adminTours as AdminTourOverview[]) : []
         );
-
-        if (!this.tourForm.destination && response.destinations.length) {
-          this.tourForm.destination = response.destinations[0].id;
-        }
-
         this.loading.set(false);
       },
       error: (error) => {
@@ -145,7 +148,7 @@ export class ProfileComponent implements OnInit {
         this.bookings.update((bookings) =>
           bookings.map((booking) => (booking.id === bookingId ? updatedBooking : booking))
         );
-        this.success.set('Бронь успешно отменена.');
+        this.success.set(this.t('admin.bookingCancelled'));
         this.activeBookingId.set(null);
       },
       error: (error) => {
@@ -166,8 +169,10 @@ export class ProfileComponent implements OnInit {
     }
 
     if (!this.tourForm.destination) {
-      this.errorText.set('Выберите направление для тура.');
-      return;
+      if (!this.tourForm.destination_name.trim()) {
+        this.errorText.set(this.t('admin.destinationRequired'));
+        return;
+      }
     }
 
     this.savingTour.set(true);
@@ -177,6 +182,8 @@ export class ProfileComponent implements OnInit {
 
     const payload: TourWritePayload = {
       destination: this.tourForm.destination,
+      destination_name: this.tourForm.destination_name.trim(),
+      destination_description: this.tourForm.destination_description.trim(),
       slug: this.tourForm.slug.trim(),
       title: this.tourForm.title.trim(),
       summary: this.tourForm.summary.trim(),
@@ -198,7 +205,7 @@ export class ProfileComponent implements OnInit {
 
     request.subscribe({
       next: () => {
-        this.success.set(this.tourForm.id ? 'Тур обновлён.' : 'Тур создан.');
+        this.success.set(this.tourForm.id ? this.t('admin.tourUpdated') : this.t('admin.tourCreated'));
         this.resetTourForm();
         this.refreshDashboard();
         this.savingTour.set(false);
@@ -219,6 +226,8 @@ export class ProfileComponent implements OnInit {
     this.tourForm = {
       id: tour.id,
       destination: tour.destinationId,
+      destination_name: tour.destination.name,
+      destination_description: '',
       slug: tour.slug,
       title: tour.title,
       summary: tour.summary,
@@ -250,7 +259,7 @@ export class ProfileComponent implements OnInit {
 
     this.toursService.deleteTour(tourId).subscribe({
       next: () => {
-        this.success.set('Тур удалён.');
+        this.success.set(this.t('admin.tourDeleted'));
         if (this.tourForm.id === tourId) {
           this.resetTourForm();
         }
@@ -270,10 +279,8 @@ export class ProfileComponent implements OnInit {
   }
 
   resetTourForm(): void {
-    const destinationId = this.destinations()[0]?.id ?? null;
     this.tourForm = {
-      ...createTourForm(),
-      destination: destinationId
+      ...createTourForm()
     };
   }
 }
