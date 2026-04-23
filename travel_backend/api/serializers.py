@@ -1,4 +1,6 @@
 from django.contrib.auth import authenticate, get_user_model
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError as DjangoValidationError
 from rest_framework import serializers
 
 from .models import Booking, ContactRequest, Destination, Tour
@@ -36,6 +38,47 @@ class LoginSerializer(serializers.Serializer):
             raise serializers.ValidationError("Invalid email or password")
         attrs["user"] = user
         return attrs
+
+
+class RegisterSerializer(serializers.Serializer):
+    name = serializers.CharField(min_length=2, max_length=150)
+    email = serializers.EmailField()
+    password = serializers.CharField(write_only=True, min_length=8, max_length=128)
+
+    def validate_email(self, value):
+        email = value.strip().lower()
+        if User.objects.filter(email__iexact=email).exists():
+            raise serializers.ValidationError("A user with this email already exists")
+        return email
+
+    def validate_password(self, value):
+        try:
+            validate_password(value)
+        except DjangoValidationError as exc:
+            raise serializers.ValidationError(list(exc.messages)) from exc
+        return value
+
+    def create(self, validated_data):
+        name = validated_data["name"].strip()
+        base_username = (
+            validated_data["email"].split("@", 1)[0].strip().replace(" ", "-").replace("_", "-") or "traveler"
+        )
+        username = base_username
+        suffix = 1
+
+        while User.objects.filter(username__iexact=username).exists():
+            suffix += 1
+            username = f"{base_username}-{suffix}"
+
+        first_name, _, last_name = name.partition(" ")
+        user = User.objects.create_user(
+            username=username,
+            email=validated_data["email"],
+            password=validated_data["password"],
+            first_name=first_name.strip(),
+            last_name=last_name.strip(),
+        )
+        return user
 
 
 class LogoutSerializer(serializers.Serializer):
@@ -254,8 +297,18 @@ class AdminTourOverviewSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     title = serializers.CharField()
     slug = serializers.CharField()
+    summary = serializers.CharField(allow_blank=True)
     owner = serializers.DictField()
     destination = serializers.DictField()
+    destinationId = serializers.IntegerField()
     bookingsCount = serializers.IntegerField()
     price = serializers.FloatField()
+    regionKey = serializers.CharField()
+    seasonKey = serializers.CharField()
+    durationText = serializers.CharField()
+    departureCity = serializers.CharField()
+    rating = serializers.FloatField()
+    popular = serializers.BooleanField()
+    heroLabel = serializers.CharField()
+    imageUrl = serializers.CharField(allow_blank=True)
     isPublished = serializers.BooleanField()

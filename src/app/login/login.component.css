@@ -16,6 +16,28 @@
   gap: 14px;
 }
 
+.mode-switch {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.mode-btn {
+  border: 1px solid #d3c5ae;
+  border-radius: 999px;
+  background: #fff8ef;
+  color: #6e5431;
+  padding: 10px 14px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.mode-btn-active {
+  background: #b87932;
+  color: #fff;
+  border-color: #b87932;
+}
+
 @media (max-width: 860px) {
   .login-layout {
     min-height: auto;

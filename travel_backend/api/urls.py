@@ -6,6 +6,7 @@ from .views import (
     BookingListCreateAPIView,
     CancelBookingAPIView,
     ContactsCreateAPIView,
+    DestinationListAPIView,
     MyBookingsAPIView,
     PopularToursAPIView,
     TourDetailAPIView,
@@ -13,12 +14,15 @@ from .views import (
     login_view,
     me_view,
     logout_view,
+    register_view,
 )
 
 urlpatterns = [
     path("auth/login", login_view, name="login"),
+    path("auth/register", register_view, name="register"),
     path("auth/logout", logout_view, name="logout"),
     path("auth/me", me_view, name="me"),
+    path("destinations", DestinationListAPIView.as_view(), name="destination-list"),
     path("tours", TourListCreateAPIView.as_view(), name="tour-list-create"),
     path("tours/popular", PopularToursAPIView.as_view(), name="tour-popular"),
     path("tours/<int:pk>", TourDetailAPIView.as_view(), name="tour-detail"),

@@ -26,14 +26,49 @@ export class LoginComponent {
   readonly error = computed(() =>
     this.errorKey() ? this.i18n.t(this.errorKey()) : this.errorText()
   );
+  readonly mode = signal<'login' | 'register'>('login');
 
+  name = '';
   email = '';
   password = '';
+  confirmPassword = '';
+
+  toggleMode(nextMode: 'login' | 'register'): void {
+    this.mode.set(nextMode);
+    this.errorKey.set('');
+    this.errorText.set('');
+  }
 
   submit(): void {
     this.loading.set(true);
     this.errorKey.set('');
     this.errorText.set('');
+
+    if (this.mode() === 'register') {
+      if (this.password !== this.confirmPassword) {
+        this.errorText.set('Пароли не совпадают.');
+        this.loading.set(false);
+        return;
+      }
+
+      this.auth.register({ name: this.name.trim(), email: this.email, password: this.password }).subscribe({
+        next: () => {
+          const redirectTo = this.route.snapshot.queryParamMap.get('redirectTo') || '/profile';
+          void this.router.navigateByUrl(redirectTo);
+          this.loading.set(false);
+        },
+        error: (error) => {
+          const key = getErrorKey(error);
+          if (key) {
+            this.errorKey.set(key);
+          } else {
+            this.errorText.set(getErrorMessage(error, this.i18n.t('errors.generic')));
+          }
+          this.loading.set(false);
+        }
+      });
+      return;
+    }
 
     this.auth.login({ email: this.email, password: this.password }).subscribe({
       next: () => {

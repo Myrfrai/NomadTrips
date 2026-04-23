@@ -43,6 +43,13 @@ export interface TourFilters {
   maxPrice: string;
 }
 
+export interface Destination {
+  id: number;
+  name: string;
+  country: string;
+  description: string;
+}
+
 export interface BookingRequest {
   tourId: number;
   fullName: string;
@@ -90,8 +97,80 @@ export interface LoginCredentials {
   password: string;
 }
 
+export interface RegisterPayload extends LoginCredentials {
+  name: string;
+}
+
 export interface AuthResponse {
   access: string;
   refresh: string;
   user: UserProfile;
+}
+
+export interface TourWritePayload {
+  destination: number;
+  slug: string;
+  title: string;
+  summary: string;
+  region_key: string;
+  season_key: string;
+  duration_text: string;
+  departure_city: string;
+  price: number;
+  rating: number;
+  popular: boolean;
+  hero_label: string;
+  image_url: string;
+  is_published: boolean;
+}
+
+export interface AdminOwnedTourSummary {
+  id: number;
+  title: string;
+  slug: string;
+}
+
+export interface AdminBookedTourSummary {
+  bookingId: number;
+  tourId: number;
+  tourTitle: string;
+  status: BookingStatus;
+}
+
+export interface AdminUserOverview {
+  id: number;
+  email: string;
+  username: string;
+  role: UserProfile['role'];
+  ownedTours: AdminOwnedTourSummary[];
+  bookedTours: AdminBookedTourSummary[];
+}
+
+export interface AdminTourOverview {
+  id: number;
+  title: string;
+  slug: string;
+  summary: string;
+  owner: {
+    id: number;
+    email: string;
+    username: string;
+  };
+  destination: {
+    id: number;
+    name: string;
+    country: string;
+  };
+  destinationId: number;
+  bookingsCount: number;
+  price: number;
+  regionKey: string;
+  seasonKey: string;
+  durationText: string;
+  departureCity: string;
+  rating: number;
+  popular: boolean;
+  heroLabel: string;
+  imageUrl: string;
+  isPublished: boolean;
 }

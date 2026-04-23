@@ -9,7 +9,7 @@ import {
   REFRESH_TOKEN_STORAGE_KEY,
   USER_STORAGE_KEY
 } from './core/app.constants';
-import { AuthResponse, LoginCredentials, UserProfile } from './core/api.models';
+import { AuthResponse, LoginCredentials, RegisterPayload, UserProfile } from './core/api.models';
 import { decodeDemoJwt, isTokenExpired } from './core/jwt.util';
 
 @Injectable({ providedIn: 'root' })
@@ -43,6 +43,13 @@ export class AuthService {
     );
   }
 
+  register(payload: RegisterPayload): Observable<UserProfile> {
+    return this.http.post<AuthResponse>(`${API_BASE_URL}/auth/register`, payload).pipe(
+      tap((response) => this.persistSession(response)),
+      map((response) => response.user)
+    );
+  }
+
   loadProfile(): Observable<UserProfile> {
     return this.http.get<UserProfile>(`${API_BASE_URL}/auth/me`).pipe(
       tap((user) => {
@@ -53,7 +60,7 @@ export class AuthService {
   }
 
   logout(redirectToLogin = true): Observable<void> {
-    return this.http.post<void>(`${API_BASE_URL}/auth/logout`, {}).pipe(
+    return this.http.post<void>(`${API_BASE_URL}/auth/logout`, { refresh: this.refreshTokenState() ?? '' }).pipe(
       catchError(() => of(void 0)),
       tap(() => {
         this.clearSession();

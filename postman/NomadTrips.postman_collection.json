@@ -1,0 +1,1142 @@
+{
+  "info": {
+    "_postman_id": "f1d3aa84-d4b1-4c9a-95e9-2f6fd6bb3b11",
+    "name": "NomadTrips API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "codex"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://127.0.0.1:8000/api"
+    },
+    {
+      "key": "accessToken",
+      "value": ""
+    },
+    {
+      "key": "refreshToken",
+      "value": ""
+    },
+    {
+      "key": "createdTourId",
+      "value": ""
+    },
+    {
+      "key": "bookingId",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "  const json = pm.response.json();",
+                  "  pm.collectionVariables.set('accessToken', json.access);",
+                  "  pm.collectionVariables.set('refreshToken', json.refresh);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Postman Traveler\",\n  \"email\": \"postman.traveler@example.com\",\n  \"password\": \"StrongPass123!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "201 Created",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Postman Traveler\",\n  \"email\": \"postman.traveler@example.com\",\n  \"password\": \"StrongPass123!\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/register",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "register"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"access\": \"<jwt-access-token>\",\n  \"refresh\": \"<jwt-refresh-token>\",\n  \"user\": {\n    \"id\": 5,\n    \"name\": \"Postman Traveler\",\n    \"email\": \"postman.traveler@example.com\",\n    \"role\": \"traveler\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "  const json = pm.response.json();",
+                  "  pm.collectionVariables.set('accessToken', json.access);",
+                  "  pm.collectionVariables.set('refreshToken', json.refresh);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"manager@nomadtrips.kz\",\n  \"password\": \"demo12345\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"manager@nomadtrips.kz\",\n  \"password\": \"demo12345\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/login",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"access\": \"<jwt-access-token>\",\n  \"refresh\": \"<jwt-refresh-token>\",\n  \"user\": {\n    \"id\": 2,\n    \"name\": \"Dias Tulegen\",\n    \"email\": \"manager@nomadtrips.kz\",\n    \"role\": \"manager\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Me",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "me"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/auth/me",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "me"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": 2,\n  \"name\": \"Dias Tulegen\",\n  \"email\": \"manager@nomadtrips.kz\",\n  \"role\": \"manager\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refresh\": \"{{refreshToken}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/logout",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "logout"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "204 No Content",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"refresh\": \"{{refreshToken}}\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/auth/logout",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "logout"
+                  ]
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "body": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Tours",
+      "item": [
+        {
+          "name": "List Destinations",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/destinations",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "destinations"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/destinations",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "destinations"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "[\n  {\n    \"id\": 1,\n    \"name\": \"Charyn Canyon\",\n    \"country\": \"Kazakhstan\",\n    \"description\": \"Canyon routes and scenic viewpoints near Almaty.\"\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "List Tours",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/tours?search=charyn&region=almaty&season=mid&maxPrice=90000",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tours"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "charyn"
+                },
+                {
+                  "key": "region",
+                  "value": "almaty"
+                },
+                {
+                  "key": "season",
+                  "value": "mid"
+                },
+                {
+                  "key": "maxPrice",
+                  "value": "90000"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/tours?search=charyn&region=almaty&season=mid&maxPrice=90000",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "tours"
+                  ],
+                  "query": [
+                    {
+                      "key": "search",
+                      "value": "charyn"
+                    },
+                    {
+                      "key": "region",
+                      "value": "almaty"
+                    },
+                    {
+                      "key": "season",
+                      "value": "mid"
+                    },
+                    {
+                      "key": "maxPrice",
+                      "value": "90000"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "[\n  {\n    \"id\": 1,\n    \"slug\": \"charyn-canyon-classic\",\n    \"name\": {\n      \"ru\": \"Charyn Canyon Classic\",\n      \"kz\": \"Charyn Canyon Classic\",\n      \"en\": \"Charyn Canyon Classic\"\n    },\n    \"summary\": {\n      \"ru\": \"Weekend route to the canyon, the Valley of Castles, and sunset viewpoints near Almaty.\",\n      \"kz\": \"Weekend route to the canyon, the Valley of Castles, and sunset viewpoints near Almaty.\",\n      \"en\": \"Weekend route to the canyon, the Valley of Castles, and sunset viewpoints near Almaty.\"\n    },\n    \"regionKey\": \"almaty\",\n    \"seasonKey\": \"mid\",\n    \"price\": 42000,\n    \"popular\": true,\n    \"heroLabel\": \"Canyon Escape\",\n    \"imageUrl\": \"/images/tours/charyn-canyon.jpg\"\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Popular Tours",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/tours/popular",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tours",
+                "popular"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/tours/popular",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "tours",
+                    "popular"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "[\n  {\n    \"id\": 1,\n    \"slug\": \"charyn-canyon-classic\",\n    \"popular\": true,\n    \"heroLabel\": \"Canyon Escape\"\n  },\n  {\n    \"id\": 2,\n    \"slug\": \"burabay-lakes-weekend\",\n    \"popular\": true,\n    \"heroLabel\": \"Lake Weekend\"\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Get Tour Detail",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/tours/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tours",
+                "1"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "url": {
+                  "raw": "{{baseUrl}}/tours/1",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "tours",
+                    "1"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": 1,\n  \"slug\": \"charyn-canyon-classic\",\n  \"name\": {\n    \"ru\": \"Charyn Canyon Classic\",\n    \"kz\": \"Charyn Canyon Classic\",\n    \"en\": \"Charyn Canyon Classic\"\n  },\n  \"summary\": {\n    \"ru\": \"Weekend route to the canyon, the Valley of Castles, and sunset viewpoints near Almaty.\",\n    \"kz\": \"Weekend route to the canyon, the Valley of Castles, and sunset viewpoints near Almaty.\",\n    \"en\": \"Weekend route to the canyon, the Valley of Castles, and sunset viewpoints near Almaty.\"\n  },\n  \"regionKey\": \"almaty\",\n  \"seasonKey\": \"mid\",\n  \"duration\": {\n    \"ru\": \"2 days / 1 night\",\n    \"kz\": \"2 days / 1 night\",\n    \"en\": \"2 days / 1 night\"\n  },\n  \"price\": 42000,\n  \"rating\": 4.9,\n  \"popular\": true,\n  \"heroLabel\": \"Canyon Escape\",\n  \"imageUrl\": \"/images/tours/charyn-canyon.jpg\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Create Tour (Admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "  const json = pm.response.json();",
+                  "  pm.collectionVariables.set('createdTourId', json.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"destination\": 1,\n  \"slug\": \"postman-admin-tour\",\n  \"title\": \"Postman Admin Tour\",\n  \"summary\": \"Created from Postman collection example.\",\n  \"region_key\": \"almaty\",\n  \"season_key\": \"mid\",\n  \"duration_text\": \"2 days / 1 night\",\n  \"departure_city\": \"Almaty\",\n  \"price\": 65000,\n  \"rating\": 4.6,\n  \"popular\": false,\n  \"hero_label\": \"Postman Route\",\n  \"image_url\": \"/images/tours/charyn-canyon.jpg\",\n  \"is_published\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/tours",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tours"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "201 Created",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"destination\": 1,\n  \"slug\": \"postman-admin-tour\",\n  \"title\": \"Postman Admin Tour\",\n  \"summary\": \"Created from Postman collection example.\",\n  \"region_key\": \"almaty\",\n  \"season_key\": \"mid\",\n  \"duration_text\": \"2 days / 1 night\",\n  \"departure_city\": \"Almaty\",\n  \"price\": 65000,\n  \"rating\": 4.6,\n  \"popular\": false,\n  \"hero_label\": \"Postman Route\",\n  \"image_url\": \"/images/tours/charyn-canyon.jpg\",\n  \"is_published\": true\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/tours",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "tours"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": 9,\n  \"slug\": \"postman-admin-tour\",\n  \"name\": {\n    \"ru\": \"Postman Admin Tour\",\n    \"kz\": \"Postman Admin Tour\",\n    \"en\": \"Postman Admin Tour\"\n  },\n  \"summary\": {\n    \"ru\": \"Created from Postman collection example.\",\n    \"kz\": \"Created from Postman collection example.\",\n    \"en\": \"Created from Postman collection example.\"\n  },\n  \"regionKey\": \"almaty\",\n  \"seasonKey\": \"mid\",\n  \"price\": 65000,\n  \"rating\": 4.6,\n  \"popular\": false,\n  \"heroLabel\": \"Postman Route\",\n  \"imageUrl\": \"/images/tours/charyn-canyon.jpg\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update Tour (Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"destination\": 1,\n  \"slug\": \"postman-admin-tour-updated\",\n  \"title\": \"Postman Admin Tour Updated\",\n  \"summary\": \"Updated from Postman collection example.\",\n  \"region_key\": \"almaty\",\n  \"season_key\": \"all\",\n  \"duration_text\": \"3 days / 2 nights\",\n  \"departure_city\": \"Almaty\",\n  \"price\": 72000,\n  \"rating\": 4.8,\n  \"popular\": true,\n  \"hero_label\": \"Updated Route\",\n  \"image_url\": \"/images/tours/kolsai-lakes.jpg\",\n  \"is_published\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/tours/{{createdTourId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tours",
+                "{{createdTourId}}"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"destination\": 1,\n  \"slug\": \"postman-admin-tour-updated\",\n  \"title\": \"Postman Admin Tour Updated\",\n  \"summary\": \"Updated from Postman collection example.\",\n  \"region_key\": \"almaty\",\n  \"season_key\": \"all\",\n  \"duration_text\": \"3 days / 2 nights\",\n  \"departure_city\": \"Almaty\",\n  \"price\": 72000,\n  \"rating\": 4.8,\n  \"popular\": true,\n  \"hero_label\": \"Updated Route\",\n  \"image_url\": \"/images/tours/kolsai-lakes.jpg\",\n  \"is_published\": true\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/tours/{{createdTourId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "tours",
+                    "{{createdTourId}}"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": 9,\n  \"slug\": \"postman-admin-tour-updated\",\n  \"name\": {\n    \"ru\": \"Postman Admin Tour Updated\",\n    \"kz\": \"Postman Admin Tour Updated\",\n    \"en\": \"Postman Admin Tour Updated\"\n  },\n  \"summary\": {\n    \"ru\": \"Updated from Postman collection example.\",\n    \"kz\": \"Updated from Postman collection example.\",\n    \"en\": \"Updated from Postman collection example.\"\n  },\n  \"regionKey\": \"almaty\",\n  \"seasonKey\": \"all\",\n  \"price\": 72000,\n  \"rating\": 4.8,\n  \"popular\": true,\n  \"heroLabel\": \"Updated Route\",\n  \"imageUrl\": \"/images/tours/kolsai-lakes.jpg\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Delete Tour (Admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/tours/{{createdTourId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tours",
+                "{{createdTourId}}"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "204 No Content",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/tours/{{createdTourId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "tours",
+                    "{{createdTourId}}"
+                  ]
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "body": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Bookings",
+      "item": [
+        {
+          "name": "Create Booking",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "  const json = pm.response.json();",
+                  "  pm.collectionVariables.set('bookingId', json.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tourId\": 1,\n  \"fullName\": \"Postman Traveler\",\n  \"phone\": \"+77001234567\",\n  \"travelers\": 2,\n  \"travelDate\": \"2026-05-15\",\n  \"comment\": \"Window seats if possible\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/bookings",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "bookings"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "201 Created",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"tourId\": 1,\n  \"fullName\": \"Postman Traveler\",\n  \"phone\": \"+77001234567\",\n  \"travelers\": 2,\n  \"travelDate\": \"2026-05-15\",\n  \"comment\": \"Window seats if possible\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/bookings",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "bookings"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": 12,\n  \"userId\": 5,\n  \"tourId\": 1,\n  \"tourName\": {\n    \"ru\": \"Charyn Canyon Classic\",\n    \"kz\": \"Charyn Canyon Classic\",\n    \"en\": \"Charyn Canyon Classic\"\n  },\n  \"travelers\": 2,\n  \"travelDate\": \"2026-05-15\",\n  \"totalPrice\": \"84000.00\",\n  \"status\": \"pending\",\n  \"createdAt\": \"2026-04-23T10:20:00Z\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "My Bookings",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/bookings/my",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "bookings",
+                "my"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/bookings/my",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "bookings",
+                    "my"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "[\n  {\n    \"id\": 12,\n    \"userId\": 5,\n    \"tourId\": 1,\n    \"tourName\": {\n      \"ru\": \"Charyn Canyon Classic\",\n      \"kz\": \"Charyn Canyon Classic\",\n      \"en\": \"Charyn Canyon Classic\"\n    },\n    \"travelers\": 2,\n    \"travelDate\": \"2026-05-15\",\n    \"totalPrice\": \"84000.00\",\n    \"status\": \"pending\",\n    \"createdAt\": \"2026-04-23T10:20:00Z\"\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Cancel Booking",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/bookings/{{bookingId}}/cancel",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "bookings",
+                "{{bookingId}}",
+                "cancel"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/bookings/{{bookingId}}/cancel",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "bookings",
+                    "{{bookingId}}",
+                    "cancel"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": 12,\n  \"userId\": 5,\n  \"tourId\": 1,\n  \"tourName\": {\n    \"ru\": \"Charyn Canyon Classic\",\n    \"kz\": \"Charyn Canyon Classic\",\n    \"en\": \"Charyn Canyon Classic\"\n  },\n  \"travelers\": 2,\n  \"travelDate\": \"2026-05-15\",\n  \"totalPrice\": \"84000.00\",\n  \"status\": \"cancelled\",\n  \"createdAt\": \"2026-04-23T10:20:00Z\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Contacts",
+      "item": [
+        {
+          "name": "Create Contact Request",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Postman User\",\n  \"email\": \"postman.user@example.com\",\n  \"topic\": \"general\",\n  \"message\": \"Hello, I would like to know more about the Charyn route.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/contacts",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "contacts"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "201 Created",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Postman User\",\n  \"email\": \"postman.user@example.com\",\n  \"topic\": \"general\",\n  \"message\": \"Hello, I would like to know more about the Charyn route.\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/contacts",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "contacts"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"id\": 3,\n  \"message\": \"Спасибо! Мы получили сообщение и скоро ответим.\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "Users Overview",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/users-overview",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "users-overview"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/users-overview",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "users-overview"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "[\n  {\n    \"id\": 2,\n    \"email\": \"manager@nomadtrips.kz\",\n    \"username\": \"manager\",\n    \"role\": \"manager\",\n    \"ownedTours\": [\n      {\n        \"id\": 1,\n        \"title\": \"Charyn Canyon Classic\",\n        \"slug\": \"charyn-canyon-classic\"\n      }\n    ],\n    \"bookedTours\": []\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Tours Overview",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/tours-overview",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "tours-overview"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{accessToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/tours-overview",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "tours-overview"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "[\n  {\n    \"id\": 1,\n    \"title\": \"Charyn Canyon Classic\",\n    \"slug\": \"charyn-canyon-classic\",\n    \"summary\": \"Weekend route to the canyon, the Valley of Castles, and sunset viewpoints near Almaty.\",\n    \"owner\": {\n      \"id\": 2,\n      \"email\": \"manager@nomadtrips.kz\",\n      \"username\": \"manager\"\n    },\n    \"destination\": {\n      \"id\": 1,\n      \"name\": \"Charyn Canyon\",\n      \"country\": \"Kazakhstan\"\n    },\n    \"destinationId\": 1,\n    \"bookingsCount\": 0,\n    \"price\": 42000,\n    \"regionKey\": \"almaty\",\n    \"seasonKey\": \"mid\",\n    \"durationText\": \"2 days / 1 night\",\n    \"departureCity\": \"Almaty\",\n    \"rating\": 4.9,\n    \"popular\": true,\n    \"heroLabel\": \"Canyon Escape\",\n    \"imageUrl\": \"/images/tours/charyn-canyon.jpg\",\n    \"isPublished\": true\n  }\n]"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
