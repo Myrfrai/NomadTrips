@@ -1,177 +1,33 @@
-.hero-card {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: 20px;
-  padding: 20px;
-  margin-bottom: 18px;
-}
-
-.hero-copy {
-  display: grid;
-  gap: 12px;
-  align-content: start;
-}
-
-.hero-copy h1 {
-  font-size: clamp(24px, 3.2vw, 36px);
-  line-height: 1.2;
-}
-
-.eyebrow {
-  display: inline-flex;
-  width: fit-content;
-  padding: 4px 8px;
-  border-radius: 4px;
-  background: #eeeeee;
-  color: #2b2b2b;
-  font-weight: 600;
-  font-size: 12px;
-}
-
-.filters {
-  padding: 16px;
-  border-radius: 6px;
-  background: #f5f5f5;
-  border: 1px solid #d4d4d4;
-}
-
-.filter-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.results {
-  display: grid;
-  gap: 14px;
-}
-
-.results-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.result-chip {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 42px;
-  min-height: 42px;
-  border-radius: 4px;
-  background: #2f4b6e;
-  color: #fff;
-  font-weight: 600;
-}
-
-.tour-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 16px;
-}
-
-.tour-card {
-  overflow: hidden;
-}
-
-.card-media-link {
-  display: block;
-  color: inherit;
-  text-decoration: none;
-}
-
-.card-media {
-  position: relative;
-  min-height: 220px;
-  background: #e3e3e3;
-}
-
-.card-media img {
-  display: block;
-  width: 100%;
-  height: 220px;
-  object-fit: cover;
-}
-
-.card-banner {
-  position: absolute;
-  left: 16px;
-  top: 16px;
-  padding: 6px 10px;
-  border-radius: 4px;
-  background: rgba(47, 75, 110, 0.9);
-  color: #fff;
-  font-weight: 600;
-}
-
-.card-body {
-  display: grid;
-  gap: 14px;
-  padding: 20px;
-}
-
-.card-head {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.card-head h3 {
-  margin: 0 0 4px;
-}
-
-.card-head p {
-  margin: 0;
-  color: #607286;
-}
-
-.rating {
-  padding: 4px 8px;
-  border-radius: 4px;
-  background: #efefef;
-  color: #2b2b2b;
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-.meta-grid {
-  display: grid;
-  gap: 8px;
-  color: #4d6073;
-  font-size: 14px;
-}
-
-.credit-line {
-  margin: 0;
-  color: #68798b;
-  font-size: 13px;
-}
-
-.credit-line a {
-  color: inherit;
-}
-
-.card-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.details-link {
-  text-decoration: none;
-  font-weight: 600;
-  color: #2f4b6e;
-}
-
-.empty-card {
-  padding: 18px;
-}
-
-@media (max-width: 860px) {
-  .hero-card {
-    grid-template-columns: 1fr;
-  }
-}
+.hero-card { display: grid; grid-template-columns: .92fr 1.08fr; gap: clamp(22px, 4vw, 52px); align-items: center; padding: clamp(24px, 4vw, 48px); margin-bottom: 34px; background: linear-gradient(135deg, #fffefa 0%, #f1f5ed 100%); }
+.hero-copy { display: grid; gap: 16px; align-content: start; }
+.hero-copy h1 { max-width: 560px; font-size: clamp(32px, 4vw, 52px); line-height: 1.08; }
+.eyebrow { display: inline-flex; width: fit-content; padding: 7px 11px; border-radius: 999px; background: #e7f0e8; color: var(--color-primary); font-size: 11px; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; }
+.filters { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; padding: 22px; border: 1px solid var(--color-line); border-radius: 15px; background: rgb(255 254 250 / 83%); }
+.filter-actions { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 9px; padding-top: 2px; }
+.results { display: grid; gap: 18px; }
+.results-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.results-head .section-title { font-size: 22px; }
+.result-chip { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; border-radius: 14px; background: var(--color-primary); color: #fff; font-weight: 750; }
+.tour-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 310px), 1fr)); gap: 20px; }
+.tour-card { overflow: hidden; transition: transform .22s ease, box-shadow .22s ease; }
+.tour-card:hover { transform: translateY(-4px); box-shadow: 0 22px 48px rgb(28 49 40 / 12%); }
+.card-media-link { display: block; color: inherit; text-decoration: none; }
+.card-media { position: relative; overflow: hidden; background: #e6e9e2; }
+.card-media img { display: block; width: 100%; height: 230px; object-fit: cover; transition: transform .45s ease; }
+.tour-card:hover .card-media img { transform: scale(1.035); }
+.card-banner { position: absolute; left: 15px; top: 15px; padding: 7px 10px; border: 1px solid rgb(255 255 255 / 28%); border-radius: 999px; background: rgb(20 50 42 / 82%); color: #fff; font-size: 11px; font-weight: 700; backdrop-filter: blur(8px); }
+.card-body { display: grid; gap: 14px; padding: 20px; }
+.card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.card-head h3 { margin: 0 0 5px; color: var(--color-ink); font-size: 18px; letter-spacing: -.025em; }
+.card-head p { margin: 0; color: var(--color-muted); font-size: 13px; }
+.rating { padding: 6px 9px; border-radius: 9px; background: #fff4df; color: #895d1f; font-size: 12px; font-weight: 750; white-space: nowrap; }
+.meta-grid { display: grid; gap: 7px; color: #5f7069; font-size: 13px; }
+.credit-line { margin: 0; color: #829089; font-size: 11px; line-height: 1.5; }
+.credit-line a { color: #61766c; }
+.card-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 13px; border-top: 1px solid #edf0eb; }
+.card-footer strong { color: var(--color-ink); font-size: 15px; }
+.details-link { color: var(--color-primary); font-size: 13px; font-weight: 750; text-decoration: none; }
+.details-link:hover { color: var(--color-accent); }
+.empty-card { padding: 22px; }
+@media (max-width: 850px) { .hero-card { grid-template-columns: 1fr; } }
+@media (max-width: 540px) { .filters { grid-template-columns: 1fr; padding: 17px; } .filter-actions { grid-column: 1; } .filter-actions > * { flex: 1 1 auto; } }

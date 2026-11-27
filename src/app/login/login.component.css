@@ -1,41 +1,8 @@
-.login-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 0.95fr) minmax(280px, 0.8fr);
-  gap: 18px;
-}
-
-.login-card,
-.hint-card {
-  padding: 22px;
-}
-
-.login-card {
-  display: grid;
-  gap: 14px;
-}
-
-.hint-card {
-  display: grid;
-  gap: 12px;
-  align-content: start;
-  background: #f5f5f5;
-}
-
-.hint-card h2 {
-  margin: 0;
-  color: #2b2b2b;
-}
-
-.hint-card ul {
-  margin: 0;
-  padding-left: 18px;
-  display: grid;
-  gap: 10px;
-  color: #4b4b4b;
-}
-
-@media (max-width: 860px) {
-  .login-layout {
-    grid-template-columns: 1fr;
-  }
-}
+.login-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, .78fr); gap: 22px; max-width: 940px; margin: clamp(12px, 5vh, 56px) auto; }
+.login-card, .hint-card { padding: clamp(22px, 4vw, 38px); }
+.login-card { display: grid; align-content: start; gap: 16px; }
+.login-card h1 { font-size: clamp(26px, 3vw, 34px); }
+.hint-card { display: grid; align-content: start; gap: 13px; background: #edf3eb; box-shadow: none; }
+.hint-card h2 { margin: 0; color: var(--color-ink); font-size: 18px; }
+.hint-card ul { display: grid; gap: 12px; margin: 2px 0 0; padding-left: 18px; color: #52645c; font-size: 13px; line-height: 1.55; overflow-wrap: anywhere; }
+@media (max-width: 760px) { .login-layout { grid-template-columns: 1fr; margin: 10px auto; } }

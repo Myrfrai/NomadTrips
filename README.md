@@ -13,6 +13,5 @@
 | Backend    | Django       |
 ---
 ## Group Members
-* Nagizbekova Aruzhan
 * Yermekuly Alibek
 * Yerzhanuly Daulet

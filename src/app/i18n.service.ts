@@ -21,13 +21,13 @@ const translations: Record<AppLanguage, Dictionary> = {
     'footer.address': 'Адрес',
     'footer.addressValue': 'Алматы, пр. Абая, 120',
     'footer.language': 'Язык',
-    'footer.stackTitle': '',
-    'footer.stackText': '',
-    'footer.demoTitle': '',
-    'footer.demoText': '',
+    'footer.stackTitle': 'О NomadTrips',
+    'footer.stackText': 'Уникальные маршруты и впечатления по всему Казахстану.',
+    'footer.demoTitle': 'Путешествуйте по-своему',
+    'footer.demoText': 'Откройте места, которые хочется увидеть своими глазами.',
     'home.badge': 'Hidden gems of Kazakhstan',
-    'home.title': 'Откройте маршруты, которые легко защищать и приятно показывать на демо',
-    'home.subtitle': '',
+    'home.title': 'Откройте Казахстан за пределами привычных маршрутов',
+    'home.subtitle': 'Подберите поездку по региону, сезону и бюджету — от горных озёр до бескрайних степей.',
     'home.search': 'Поиск по направлению',
     'home.region': 'Регион',
     'home.season': 'Сезон',
@@ -62,7 +62,7 @@ const translations: Record<AppLanguage, Dictionary> = {
     'detail.loginCta': 'Перейти к авторизации',
     'detail.back': 'Назад к списку туров',
     'booking.title': 'Забронировать тур',
-    'booking.subtitle': '',
+    'booking.subtitle': 'Оставьте заявку, и мы поможем подготовиться к поездке.',
     'booking.name': 'Имя и фамилия',
     'booking.phone': 'Телефон',
     'booking.travelers': 'Количество человек',
@@ -84,13 +84,13 @@ const translations: Record<AppLanguage, Dictionary> = {
     'booking.errors.dateFuture': 'Дата поездки должна быть позже сегодняшней.',
     'booking.errors.commentLength': 'Комментарий не должен превышать 300 символов.',
     'popular.title': 'Популярные направления',
-    'popular.subtitle': '',
+    'popular.subtitle': 'Маршруты, которые путешественники выбирают чаще всего.',
     'popular.refresh': 'Обновить популярное',
     'popular.loading': 'Подгружаем популярные туры...',
     'popular.empty': 'Популярные направления временно недоступны.',
     'popular.details': 'Подробнее',
     'contacts.title': 'Связаться с командой NomadTrips',
-    'contacts.subtitle': '',
+    'contacts.subtitle': 'Поможем выбрать маршрут, ответим на вопросы и обсудим сотрудничество.',
     'contacts.name': 'Ваше имя',
     'contacts.email': 'Email',
     'contacts.topic': 'Тема',
@@ -109,7 +109,7 @@ const translations: Record<AppLanguage, Dictionary> = {
     'contacts.topic.booking': 'Помощь с бронированием',
     'contacts.topic.partnership': 'Партнёрство',
     'login.title': 'Вход в личный кабинет',
-    'login.subtitle': '',
+    'login.subtitle': 'Войдите, чтобы управлять своими поездками и заявками.',
     'login.email': 'Email',
     'login.password': 'Пароль',
     'login.submit': 'Войти',
@@ -118,7 +118,7 @@ const translations: Record<AppLanguage, Dictionary> = {
     'login.demoTraveler': 'Путешественник: traveler@nomadtrips.kz / demo12345',
     'login.demoManager': 'Менеджер: manager@nomadtrips.kz / demo12345',
     'profile.title': 'Личный кабинет',
-    'profile.subtitle': '',
+    'profile.subtitle': 'Все ваши поездки и заявки собраны в одном месте.',
     'profile.refresh': 'Обновить кабинет',
     'profile.empty': 'У вас пока нет бронирований. Выберите тур и отправьте заявку.',
     'profile.bookingDate': 'Дата поездки',
@@ -126,6 +126,7 @@ const translations: Record<AppLanguage, Dictionary> = {
     'profile.total': 'Итого',
     'profile.cancel': 'Отменить бронь',
     'profile.cancelLoading': 'Отменяем...',
+    'profile.cancelSuccess': 'Бронь успешно отменена.',
     'profile.userRole': 'Роль',
     'status.pending': 'В обработке',
     'status.confirmed': 'Подтверждено',
@@ -160,13 +161,13 @@ const translations: Record<AppLanguage, Dictionary> = {
     'footer.address': 'Мекенжай',
     'footer.addressValue': 'Алматы, Абай даңғ., 120',
     'footer.language': 'Тіл',
-    'footer.stackTitle': '',
-    'footer.stackText': '',
-    'footer.demoTitle': '',
-    'footer.demoText': '',
+    'footer.stackTitle': 'NomadTrips туралы',
+    'footer.stackText': 'Қазақстан бойынша ерекше маршруттар мен әсерлер.',
+    'footer.demoTitle': 'Өзіңізше саяхаттаңыз',
+    'footer.demoText': 'Өз көзіңізбен көргіңіз келетін жерлерді ашыңыз.',
     'home.badge': 'Hidden gems of Kazakhstan',
-    'home.title': 'Қорғауға да, демоға да ыңғайлы маршруттарды ашыңыз',
-    'home.subtitle': '',
+    'home.title': 'Қазақстанды таныс бағыттардан тыс ашыңыз',
+    'home.subtitle': 'Аймақ, маусым және бюджет бойынша сапар таңдаңыз — тау көлдерінен кең далаға дейін.',
     'home.search': 'Бағыт бойынша іздеу',
     'home.region': 'Аймақ',
     'home.season': 'Маусым',
@@ -201,7 +202,7 @@ const translations: Record<AppLanguage, Dictionary> = {
     'detail.loginCta': 'Авторизацияға өту',
     'detail.back': 'Турлар тізіміне қайту',
     'booking.title': 'Турды броньдау',
-    'booking.subtitle': '',
+    'booking.subtitle': 'Өтінім қалдырыңыз, сапарға дайындалуға көмектесеміз.',
     'booking.name': 'Аты-жөні',
     'booking.phone': 'Телефон',
     'booking.travelers': 'Адам саны',
@@ -223,13 +224,13 @@ const translations: Record<AppLanguage, Dictionary> = {
     'booking.errors.dateFuture': 'Сапар күні бүгіннен кейін болуы керек.',
     'booking.errors.commentLength': 'Түсініктеме 300 таңбадан аспауы керек.',
     'popular.title': 'Танымал бағыттар',
-    'popular.subtitle': '',
+    'popular.subtitle': 'Саяхатшылар жиі таңдайтын бағыттар.',
     'popular.refresh': 'Танымалды жаңарту',
     'popular.loading': 'Танымал турлар жүктелуде...',
     'popular.empty': 'Танымал турлар қолжетімсіз.',
     'popular.details': 'Толығырақ',
     'contacts.title': 'NomadTrips командасымен байланыс',
-    'contacts.subtitle': '',
+    'contacts.subtitle': 'Бағыт таңдауға көмектесіп, сұрақтарыңызға жауап береміз.',
     'contacts.name': 'Атыңыз',
     'contacts.email': 'Email',
     'contacts.topic': 'Тақырып',
@@ -248,7 +249,7 @@ const translations: Record<AppLanguage, Dictionary> = {
     'contacts.topic.booking': 'Бронь көмегі',
     'contacts.topic.partnership': 'Серіктестік',
     'login.title': 'Жеке кабинетке кіру',
-    'login.subtitle': '',
+    'login.subtitle': 'Сапарларыңыз бен өтінімдеріңізді басқару үшін кіріңіз.',
     'login.email': 'Email',
     'login.password': 'Құпиясөз',
     'login.submit': 'Кіру',
@@ -257,7 +258,7 @@ const translations: Record<AppLanguage, Dictionary> = {
     'login.demoTraveler': 'Саяхатшы: traveler@nomadtrips.kz / demo12345',
     'login.demoManager': 'Менеджер: manager@nomadtrips.kz / demo12345',
     'profile.title': 'Жеке кабинет',
-    'profile.subtitle': '',
+    'profile.subtitle': 'Барлық сапарларыңыз бен өтінімдеріңіз бір жерде.',
     'profile.refresh': 'Кабинетті жаңарту',
     'profile.empty': 'Әзірге бронь жоқ.',
     'profile.bookingDate': 'Сапар күні',
@@ -265,6 +266,7 @@ const translations: Record<AppLanguage, Dictionary> = {
     'profile.total': 'Барлығы',
     'profile.cancel': 'Броньды болдырмау',
     'profile.cancelLoading': 'Болдырмауда...',
+    'profile.cancelSuccess': 'Бронь сәтті тоқтатылды.',
     'profile.userRole': 'Рөл',
     'status.pending': 'Өңделуде',
     'status.confirmed': 'Расталған',
@@ -299,13 +301,13 @@ const translations: Record<AppLanguage, Dictionary> = {
     'footer.address': 'Address',
     'footer.addressValue': 'Almaty, Abay Ave. 120',
     'footer.language': 'Language',
-    'footer.stackTitle': '',
-    'footer.stackText': '',
-    'footer.demoTitle': '',
-    'footer.demoText': '',
+    'footer.stackTitle': 'About NomadTrips',
+    'footer.stackText': 'Distinctive routes and experiences across Kazakhstan.',
+    'footer.demoTitle': 'Travel your way',
+    'footer.demoText': 'Discover places you will want to experience for yourself.',
     'home.badge': 'Hidden gems of Kazakhstan',
-    'home.title': 'Explore routes that look polished in the demo and solid in the defense',
-    'home.subtitle': '',
+    'home.title': 'Discover Kazakhstan beyond the usual routes',
+    'home.subtitle': 'Find a trip by region, season, and budget—from alpine lakes to the open steppe.',
     'home.search': 'Search tours',
     'home.region': 'Region',
     'home.season': 'Season',
@@ -340,7 +342,7 @@ const translations: Record<AppLanguage, Dictionary> = {
     'detail.loginCta': 'Go to login',
     'detail.back': 'Back to tours',
     'booking.title': 'Book this tour',
-    'booking.subtitle': '',
+    'booking.subtitle': 'Send a request and we will help you plan your trip.',
     'booking.name': 'Full name',
     'booking.phone': 'Phone',
     'booking.travelers': 'Travelers',
@@ -362,13 +364,13 @@ const translations: Record<AppLanguage, Dictionary> = {
     'booking.errors.dateFuture': 'Travel date must be after today.',
     'booking.errors.commentLength': 'Comment must be 300 characters or less.',
     'popular.title': 'Popular destinations',
-    'popular.subtitle': '',
+    'popular.subtitle': 'Routes travelers choose most often.',
     'popular.refresh': 'Refresh popular',
     'popular.loading': 'Loading popular tours...',
     'popular.empty': 'Popular destinations are unavailable right now.',
     'popular.details': 'Details',
     'contacts.title': 'Contact the NomadTrips team',
-    'contacts.subtitle': '',
+    'contacts.subtitle': 'We can help you choose a route, answer questions, or discuss a partnership.',
     'contacts.name': 'Your name',
     'contacts.email': 'Email',
     'contacts.topic': 'Topic',
@@ -387,7 +389,7 @@ const translations: Record<AppLanguage, Dictionary> = {
     'contacts.topic.booking': 'Booking help',
     'contacts.topic.partnership': 'Partnership',
     'login.title': 'Sign in to your account',
-    'login.subtitle': '',
+    'login.subtitle': 'Sign in to manage your trips and booking requests.',
     'login.email': 'Email',
     'login.password': 'Password',
     'login.submit': 'Sign in',
@@ -396,7 +398,7 @@ const translations: Record<AppLanguage, Dictionary> = {
     'login.demoTraveler': 'Traveler: traveler@nomadtrips.kz / demo12345',
     'login.demoManager': 'Manager: manager@nomadtrips.kz / demo12345',
     'profile.title': 'Profile',
-    'profile.subtitle': '',
+    'profile.subtitle': 'Your trips and booking requests, all in one place.',
     'profile.refresh': 'Refresh dashboard',
     'profile.empty': 'No bookings yet. Pick a tour and send a request.',
     'profile.bookingDate': 'Travel date',
@@ -404,6 +406,7 @@ const translations: Record<AppLanguage, Dictionary> = {
     'profile.total': 'Total',
     'profile.cancel': 'Cancel booking',
     'profile.cancelLoading': 'Cancelling...',
+    'profile.cancelSuccess': 'Booking cancelled successfully.',
     'profile.userRole': 'Role',
     'status.pending': 'Pending',
     'status.confirmed': 'Confirmed',
@@ -426,12 +429,23 @@ const translations: Record<AppLanguage, Dictionary> = {
 
 @Injectable({ providedIn: 'root' })
 export class I18nService {
-  private readonly currentLanguage = signal<AppLanguage>('ru');
+  private readonly languageStorageKey = 'nomadtrips.language';
+  private readonly currentLanguage = signal<AppLanguage>(this.readSavedLanguage());
 
   readonly lang = this.currentLanguage.asReadonly();
 
+  constructor() {
+    this.syncDocumentLanguage(this.currentLanguage());
+  }
+
   setLanguage(language: AppLanguage): void {
     this.currentLanguage.set(language);
+    try {
+      localStorage.setItem(this.languageStorageKey, language);
+    } catch {
+      // Language switching still works when browser storage is unavailable.
+    }
+    this.syncDocumentLanguage(language);
   }
 
   t(key: string): string {
@@ -441,5 +455,20 @@ export class I18nService {
 
   localize(value: LocalizedText): string {
     return value[this.currentLanguage()] ?? value.ru ?? value.en;
+  }
+
+  private readSavedLanguage(): AppLanguage {
+    try {
+      const savedLanguage = localStorage.getItem(this.languageStorageKey);
+      return savedLanguage === 'ru' || savedLanguage === 'kz' || savedLanguage === 'en'
+        ? savedLanguage
+        : 'ru';
+    } catch {
+      return 'ru';
+    }
+  }
+
+  private syncDocumentLanguage(language: AppLanguage): void {
+    document.documentElement.lang = language === 'kz' ? 'kk' : language;
   }
 }

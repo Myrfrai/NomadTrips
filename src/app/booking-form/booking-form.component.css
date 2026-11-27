@@ -1,20 +1,4 @@
-.booking-head {
-  display: grid;
-  gap: 8px;
-  margin-bottom: 14px;
-}
-
-.booking-head h2 {
-  margin: 0;
-  color: #2b2b2b;
-}
-
-.summary-box {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 14px;
-  border-radius: 4px;
-  background: #f5f5f5;
-  border: 1px solid #d4d4d4;
-}
+.booking-head { display: grid; gap: 7px; margin-bottom: 17px; }
+.booking-head h2 { margin: 0; color: var(--color-ink); font-size: 22px; letter-spacing: -.025em; }
+.summary-box { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 15px; border: 1px solid #d4e3d7; border-radius: 12px; background: #edf5ee; color: #51695c; }
+.summary-box strong { color: var(--color-primary); font-size: 18px; white-space: nowrap; }

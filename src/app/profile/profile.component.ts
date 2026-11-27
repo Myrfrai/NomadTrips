@@ -73,7 +73,7 @@ export class ProfileComponent implements OnInit {
         this.bookings.update((bookings) =>
           bookings.map((booking) => (booking.id === bookingId ? updatedBooking : booking))
         );
-        this.success.set('Бронь успешно отменена.');
+        this.success.set(this.i18n.t('profile.cancelSuccess'));
         this.activeBookingId.set(null);
       },
       error: (error) => {
