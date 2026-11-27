@@ -4,12 +4,16 @@ import { Observable } from 'rxjs';
 
 import { API_BASE_URL } from './core/app.constants';
 import {
+  AdminTourOverview,
+  AdminUserOverview,
   Booking,
   BookingRequest,
   ContactRequest,
   ContactResponse,
+  Destination,
   Tour,
-  TourFilters
+  TourFilters,
+  TourWritePayload
 } from './core/api.models';
 
 @Injectable({ providedIn: 'root' })
@@ -46,6 +50,10 @@ export class ToursService {
     return this.http.get<Tour>(`${API_BASE_URL}/tours/${id}`);
   }
 
+  getDestinations(): Observable<Destination[]> {
+    return this.http.get<Destination[]>(`${API_BASE_URL}/destinations`);
+  }
+
   createBooking(payload: BookingRequest): Observable<Booking> {
     return this.http.post<Booking>(`${API_BASE_URL}/bookings`, payload);
   }
@@ -60,5 +68,25 @@ export class ToursService {
 
   createContactRequest(payload: ContactRequest): Observable<ContactResponse> {
     return this.http.post<ContactResponse>(`${API_BASE_URL}/contacts`, payload);
+  }
+
+  getAdminUsersOverview(): Observable<AdminUserOverview[]> {
+    return this.http.get<AdminUserOverview[]>(`${API_BASE_URL}/admin/users-overview`);
+  }
+
+  getAdminToursOverview(): Observable<AdminTourOverview[]> {
+    return this.http.get<AdminTourOverview[]>(`${API_BASE_URL}/admin/tours-overview`);
+  }
+
+  createTour(payload: TourWritePayload): Observable<Tour> {
+    return this.http.post<Tour>(`${API_BASE_URL}/tours`, payload);
+  }
+
+  updateTour(id: number, payload: TourWritePayload): Observable<Tour> {
+    return this.http.put<Tour>(`${API_BASE_URL}/tours/${id}`, payload);
+  }
+
+  deleteTour(id: number): Observable<void> {
+    return this.http.delete<void>(`${API_BASE_URL}/tours/${id}`);
   }
 }

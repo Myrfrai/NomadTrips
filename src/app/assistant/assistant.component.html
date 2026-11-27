@@ -1,0 +1,71 @@
+<div class="assistant-widget">
+  @if (open()) {
+    <section class="assistant-panel" id="nomad-assistant-panel" [attr.aria-label]="i18n.t('chat.title')" (keydown.escape)="close()">
+      <header class="assistant-header">
+        <div class="assistant-header-icon" aria-hidden="true">✦</div>
+        <div class="assistant-heading">
+          <strong>{{ i18n.t('chat.title') }}</strong>
+          <span>{{ i18n.t('chat.subtitle') }}</span>
+        </div>
+        <button class="assistant-close" type="button" [attr.aria-label]="i18n.t('chat.close')" (click)="close()">×</button>
+      </header>
+
+      <div class="assistant-messages" #messageList aria-live="polite" aria-relevant="additions text">
+        @if (!messages().length) {
+          <div class="assistant-welcome">
+            <span class="welcome-spark" aria-hidden="true">✦</span>
+            <h2>{{ i18n.t('chat.welcomeTitle') }}</h2>
+            <p>{{ i18n.t('chat.welcome') }}</p>
+            <div class="assistant-suggestions">
+              <button type="button" (click)="sendSuggestion('chat.suggestionWeekend')">{{ i18n.t('chat.suggestionWeekend') }}</button>
+              <button type="button" (click)="sendSuggestion('chat.suggestionBudget')">{{ i18n.t('chat.suggestionBudget') }}</button>
+            </div>
+          </div>
+        }
+
+        @for (message of messages(); track message.id) {
+          <div class="assistant-message" [class.from-user]="message.role === 'user'">
+            <span class="message-author">{{ i18n.t(message.role === 'user' ? 'chat.you' : 'chat.assistant') }}</span>
+            <p>{{ message.content }}</p>
+          </div>
+        }
+
+        @if (loading()) {
+          <div class="assistant-message assistant-thinking" role="status">
+            <span class="message-author">{{ i18n.t('chat.assistant') }}</span>
+            <p>{{ i18n.t('chat.thinking') }}</p>
+          </div>
+        }
+      </div>
+
+      <div class="assistant-composer">
+        @if (errorKey()) {
+          <p class="assistant-error" role="alert">{{ i18n.t(errorKey()) }}</p>
+        }
+        <div class="composer-row">
+          <textarea
+            #messageInput
+            [(ngModel)]="draft"
+            [attr.aria-label]="i18n.t('chat.placeholder')"
+            [placeholder]="i18n.t('chat.placeholder')"
+            maxlength="1000"
+            rows="1"
+            (keydown)="onKeydown($event)"
+          ></textarea>
+          <button class="assistant-send" type="button" [disabled]="!draft.trim() || loading()" [attr.aria-label]="i18n.t('chat.send')" (click)="send()">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m4 12 15-7-4.4 14-2.9-5.8L4 12Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="m11.7 13.2 7.2-8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+        <span class="assistant-hint">{{ i18n.t('chat.enterHint') }}</span>
+      </div>
+    </section>
+  }
+
+  <button class="assistant-toggle" type="button" [attr.aria-label]="i18n.t(open() ? 'chat.close' : 'chat.open')" [attr.aria-expanded]="open()" aria-controls="nomad-assistant-panel" (click)="toggle()">
+    @if (open()) {
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 5 19 19M19 5 5 19" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    } @else {
+      <svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M6 9.5A5.5 5.5 0 0 1 11.5 4h10A5.5 5.5 0 0 1 27 9.5v10a5.5 5.5 0 0 1-5.5 5.5h-7L8 29v-4.6a5.5 5.5 0 0 1-2-4.2V9.5Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="m16 9 .8 2.2L19 12l-2.2.8L16 15l-.8-2.2L13 12l2.2-.8L16 9Zm5 7 .45 1.5L23 18l-1.55.5L21 20l-.45-1.5L19 18l1.55-.5L21 16Z" fill="currentColor"/></svg>
+    }
+  </button>
+</div>

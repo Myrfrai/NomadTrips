@@ -29,6 +29,19 @@ export function getErrorKey(error: unknown): string {
 
 export function getErrorMessage(error: unknown, fallback: string): string {
   if (error instanceof HttpErrorResponse) {
+    if (error.error && typeof error.error === 'object') {
+      const entries = Object.entries(error.error as Record<string, unknown>);
+      for (const [, value] of entries) {
+        if (typeof value === 'string' && value.trim()) {
+          return value;
+        }
+
+        if (Array.isArray(value) && value.length && typeof value[0] === 'string') {
+          return value[0];
+        }
+      }
+    }
+
     const serverMessage =
       typeof error.error?.message === 'string'
         ? error.error.message

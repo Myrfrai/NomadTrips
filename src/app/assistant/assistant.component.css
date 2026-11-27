@@ -1,0 +1,37 @@
+:host { position: fixed; right: clamp(14px, 3vw, 34px); bottom: 22px; z-index: 50; }
+.assistant-widget { display: grid; justify-items: end; gap: 14px; }
+.assistant-toggle { display: grid; place-items: center; width: 62px; height: 62px; border: 0; border-radius: 20px; color: white; background: var(--color-primary); box-shadow: 0 12px 26px rgb(16 68 56 / 30%); cursor: pointer; transition: transform .2s ease, box-shadow .2s ease; }
+.assistant-toggle:hover { transform: translateY(-3px); box-shadow: 0 16px 30px rgb(16 68 56 / 35%); }
+.assistant-toggle svg { width: 30px; height: 30px; }
+.assistant-panel { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; width: min(390px, calc(100vw - 28px)); height: min(540px, calc(100dvh - 112px)); overflow: hidden; border: 1px solid var(--color-line); border-radius: 22px; background: var(--color-surface); box-shadow: 0 24px 70px rgb(20 54 43 / 23%); }
+.assistant-header { display: flex; align-items: center; gap: 11px; padding: 17px 18px; color: white; background: linear-gradient(135deg, var(--color-primary), #28755f); }
+.assistant-header-icon { display: grid; place-items: center; width: 38px; height: 38px; flex: none; border-radius: 12px; background: rgb(255 255 255 / 16%); color: #f4d9aa; font-size: 24px; }
+.assistant-heading { display: grid; gap: 2px; min-width: 0; }
+.assistant-heading strong { font-size: 15px; line-height: 1.25; }
+.assistant-heading span { color: #d3e9df; font-size: 11px; }
+.assistant-close { display: grid; place-items: center; margin-left: auto; width: 30px; height: 30px; border: 0; border-radius: 9px; color: white; background: transparent; font-size: 25px; line-height: 1; cursor: pointer; }
+.assistant-close:hover { background: rgb(255 255 255 / 14%); }
+.assistant-messages { display: flex; flex-direction: column; gap: 14px; min-height: 0; padding: 20px 16px; overflow-y: auto; overscroll-behavior: contain; }
+.assistant-welcome { display: grid; justify-items: start; gap: 9px; padding: 18px 3px; }
+.welcome-spark { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 14px; background: #e7f0e9; color: var(--color-primary); font-size: 25px; }
+.assistant-welcome h2 { margin: 5px 0 0; font-size: 18px; letter-spacing: -.03em; }
+.assistant-welcome p { margin: 0; color: var(--color-muted); font-size: 13px; line-height: 1.55; }
+.assistant-suggestions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.assistant-suggestions button { padding: 8px 10px; border: 1px solid #d8e5d9; border-radius: 10px; color: var(--color-primary); background: #f4f8f2; font-size: 12px; text-align: left; cursor: pointer; }
+.assistant-suggestions button:hover { background: #e9f2e8; }
+.assistant-message { align-self: flex-start; max-width: 88%; }
+.assistant-message.from-user { align-self: flex-end; }
+.message-author { display: block; margin: 0 0 5px 3px; color: var(--color-muted); font-size: 10px; font-weight: 700; }
+.assistant-message.from-user .message-author { text-align: right; margin-right: 3px; }
+.assistant-message p { margin: 0; padding: 11px 13px; border-radius: 14px 14px 14px 4px; color: var(--color-ink); background: var(--color-surface-muted); font-size: 13px; line-height: 1.55; white-space: pre-wrap; overflow-wrap: anywhere; }
+.assistant-message.from-user p { color: #fff; background: var(--color-primary); border-radius: 14px 14px 4px 14px; }
+.assistant-composer { display: grid; gap: 7px; padding: 12px 14px 13px; border-top: 1px solid var(--color-line); background: #fff; }
+.composer-row { display: flex; align-items: flex-end; gap: 8px; }
+.composer-row textarea { flex: 1; min-width: 0; max-height: 110px; min-height: 42px; resize: vertical; padding: 10px 12px; border: 1px solid var(--color-line); border-radius: 12px; color: var(--color-ink); outline: none; font-size: 13px; line-height: 1.4; }
+.composer-row textarea:focus { border-color: var(--color-primary); box-shadow: 0 0 0 3px rgb(23 89 75 / 10%); }
+.assistant-send { display: grid; place-items: center; width: 42px; height: 42px; flex: none; border: 0; border-radius: 12px; color: white; background: var(--color-primary); cursor: pointer; }
+.assistant-send:disabled { opacity: .45; cursor: default; }
+.assistant-send svg { width: 20px; height: 20px; }
+.assistant-hint { color: #83928a; font-size: 10px; }
+.assistant-error { margin: 0; color: #9d453a; font-size: 12px; line-height: 1.4; }
+@media (max-width: 620px) { :host { right: 14px; bottom: 14px; } .assistant-panel { height: min(590px, calc(100dvh - 88px)); } .assistant-toggle { width: 56px; height: 56px; border-radius: 18px; } }

@@ -2,13 +2,14 @@ import { Component, computed, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
 import { AuthService } from './auth.service';
+import { AssistantComponent } from './assistant/assistant.component';
 import { AppLanguage } from './core/api.models';
 import { I18nService } from './i18n.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, RouterLinkActive],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, AssistantComponent],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

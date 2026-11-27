@@ -1,17 +1,64 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
-import { catchError, of } from 'rxjs';
+import { FormsModule } from '@angular/forms';
+import { catchError, forkJoin, of } from 'rxjs';
 
 import { AuthService } from '../auth.service';
 import { getErrorKey, getErrorMessage } from '../core/api-error.util';
-import { Booking } from '../core/api.models';
+import {
+  AdminTourOverview,
+  AdminUserOverview,
+  Booking,
+  Destination,
+  TourWritePayload
+} from '../core/api.models';
 import { I18nService } from '../i18n.service';
 import { ToursService } from '../tours.service';
+
+interface TourFormModel {
+  id: number | null;
+  destination: number | null;
+  destination_name: string;
+  destination_description: string;
+  slug: string;
+  title: string;
+  summary: string;
+  region_key: string;
+  season_key: string;
+  duration_text: string;
+  departure_city: string;
+  price: number;
+  rating: number;
+  popular: boolean;
+  hero_label: string;
+  image_url: string;
+  is_published: boolean;
+}
+
+const createTourForm = (): TourFormModel => ({
+  id: null,
+  destination: null,
+  destination_name: '',
+  destination_description: '',
+  slug: '',
+  title: '',
+  summary: '',
+  region_key: '',
+  season_key: '',
+  duration_text: '',
+  departure_city: '',
+  price: 0,
+  rating: 4.8,
+  popular: false,
+  hero_label: '',
+  image_url: '',
+  is_published: true
+});
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
@@ -21,7 +68,12 @@ export class ProfileComponent implements OnInit {
   private readonly toursService = inject(ToursService);
 
   readonly bookings = signal<Booking[]>([]);
+  readonly adminUsers = signal<AdminUserOverview[]>([]);
+  readonly adminTours = signal<AdminTourOverview[]>([]);
+  readonly destinations = signal<Destination[]>([]);
   readonly loading = signal(false);
+  readonly savingTour = signal(false);
+  readonly deletingTourId = signal<number | null>(null);
   readonly errorKey = signal('');
   readonly errorText = signal('');
   readonly error = computed(() =>
@@ -29,9 +81,16 @@ export class ProfileComponent implements OnInit {
   );
   readonly success = signal('');
   readonly activeBookingId = signal<number | null>(null);
+  readonly isAdmin = computed(() => this.auth.user()?.role === 'manager');
+
+  tourForm = createTourForm();
 
   ngOnInit(): void {
     this.refreshDashboard();
+  }
+
+  private t(key: string): string {
+    return this.i18n.t(key);
   }
 
   refreshDashboard(): void {
@@ -40,14 +99,30 @@ export class ProfileComponent implements OnInit {
     this.errorText.set('');
     this.success.set('');
 
-    this.auth
-      .loadProfile()
-      .pipe(catchError(() => of(this.auth.user())))
-      .subscribe();
+    this.auth.loadProfile().pipe(catchError(() => of(this.auth.user()))).subscribe();
 
-    this.toursService.getMyBookings().subscribe({
-      next: (bookings) => {
-        this.bookings.set(bookings);
+    const request = this.isAdmin()
+      ? forkJoin({
+          bookings: this.toursService.getMyBookings(),
+          destinations: this.toursService.getDestinations(),
+          adminUsers: this.toursService.getAdminUsersOverview(),
+          adminTours: this.toursService.getAdminToursOverview()
+        })
+      : forkJoin({
+          bookings: this.toursService.getMyBookings(),
+          destinations: this.toursService.getDestinations()
+        });
+
+    request.subscribe({
+      next: (response) => {
+        this.bookings.set(response.bookings);
+        this.destinations.set(response.destinations);
+        this.adminUsers.set(
+          'adminUsers' in response ? (response.adminUsers as AdminUserOverview[]) : []
+        );
+        this.adminTours.set(
+          'adminTours' in response ? (response.adminTours as AdminTourOverview[]) : []
+        );
         this.loading.set(false);
       },
       error: (error) => {
@@ -86,5 +161,126 @@ export class ProfileComponent implements OnInit {
         this.activeBookingId.set(null);
       }
     });
+  }
+
+  submitTour(): void {
+    if (!this.isAdmin()) {
+      return;
+    }
+
+    if (!this.tourForm.destination) {
+      if (!this.tourForm.destination_name.trim()) {
+        this.errorText.set(this.t('admin.destinationRequired'));
+        return;
+      }
+    }
+
+    this.savingTour.set(true);
+    this.errorKey.set('');
+    this.errorText.set('');
+    this.success.set('');
+
+    const payload: TourWritePayload = {
+      destination: this.tourForm.destination,
+      destination_name: this.tourForm.destination_name.trim(),
+      destination_description: this.tourForm.destination_description.trim(),
+      slug: this.tourForm.slug.trim(),
+      title: this.tourForm.title.trim(),
+      summary: this.tourForm.summary.trim(),
+      region_key: this.tourForm.region_key.trim(),
+      season_key: this.tourForm.season_key.trim(),
+      duration_text: this.tourForm.duration_text.trim(),
+      departure_city: this.tourForm.departure_city.trim(),
+      price: Number(this.tourForm.price),
+      rating: Number(this.tourForm.rating),
+      popular: this.tourForm.popular,
+      hero_label: this.tourForm.hero_label.trim(),
+      image_url: this.tourForm.image_url.trim(),
+      is_published: this.tourForm.is_published
+    };
+
+    const request = this.tourForm.id
+      ? this.toursService.updateTour(this.tourForm.id, payload)
+      : this.toursService.createTour(payload);
+
+    request.subscribe({
+      next: () => {
+        this.success.set(this.tourForm.id ? this.t('admin.tourUpdated') : this.t('admin.tourCreated'));
+        this.resetTourForm();
+        this.refreshDashboard();
+        this.savingTour.set(false);
+      },
+      error: (error) => {
+        const key = getErrorKey(error);
+        if (key) {
+          this.errorKey.set(key);
+        } else {
+          this.errorText.set(getErrorMessage(error, this.i18n.t('errors.generic')));
+        }
+        this.savingTour.set(false);
+      }
+    });
+  }
+
+  editTour(tour: AdminTourOverview): void {
+    this.tourForm = {
+      id: tour.id,
+      destination: tour.destinationId,
+      destination_name: tour.destination.name,
+      destination_description: '',
+      slug: tour.slug,
+      title: tour.title,
+      summary: tour.summary,
+      region_key: tour.regionKey,
+      season_key: tour.seasonKey,
+      duration_text: tour.durationText,
+      departure_city: tour.departureCity,
+      price: tour.price,
+      rating: tour.rating,
+      popular: tour.popular,
+      hero_label: tour.heroLabel,
+      image_url: tour.imageUrl,
+      is_published: tour.isPublished
+    };
+    this.success.set('');
+    this.errorKey.set('');
+    this.errorText.set('');
+  }
+
+  deleteTour(tourId: number): void {
+    if (!this.isAdmin()) {
+      return;
+    }
+
+    this.deletingTourId.set(tourId);
+    this.errorKey.set('');
+    this.errorText.set('');
+    this.success.set('');
+
+    this.toursService.deleteTour(tourId).subscribe({
+      next: () => {
+        this.success.set(this.t('admin.tourDeleted'));
+        if (this.tourForm.id === tourId) {
+          this.resetTourForm();
+        }
+        this.refreshDashboard();
+        this.deletingTourId.set(null);
+      },
+      error: (error) => {
+        const key = getErrorKey(error);
+        if (key) {
+          this.errorKey.set(key);
+        } else {
+          this.errorText.set(getErrorMessage(error, this.i18n.t('errors.generic')));
+        }
+        this.deletingTourId.set(null);
+      }
+    });
+  }
+
+  resetTourForm(): void {
+    this.tourForm = {
+      ...createTourForm()
+    };
   }
 }
