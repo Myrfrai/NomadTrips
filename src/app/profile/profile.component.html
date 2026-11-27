@@ -1,12 +1,7 @@
 <section class="profile-head section-card">
   <div>
     <h1 class="section-title">{{ i18n.t('profile.title') }}</h1>
-    <p class="section-text">{{ i18n.t('profile.subtitle') }}</p>
   </div>
-
-  <button class="secondary-btn" type="button" (click)="refreshDashboard()">
-    {{ i18n.t('profile.refresh') }}
-  </button>
 </section>
 
 <section class="profile-layout">
@@ -29,45 +24,215 @@
       <div class="section-card empty-card">
         <p class="section-text">{{ i18n.t('home.loading') }}</p>
       </div>
-    } @else if (bookings().length) {
-      <div class="booking-list">
-        @for (booking of bookings(); track booking.id) {
-          <article class="booking-card section-card">
-            <div class="booking-top">
-              <div>
-                <h3>{{ i18n.localize(booking.tourName) }}</h3>
-                <p>{{ i18n.t('status.' + booking.status) }}</p>
-              </div>
-              <strong>{{ booking.totalPrice | number }} ₸</strong>
+    } @else {
+      @if (isAdmin()) {
+        <section class="section-card admin-section">
+          <div class="admin-head">
+            <div>
+              <h2>{{ i18n.t('admin.manageTours') }}</h2>
+              <p class="section-text">{{ i18n.t('admin.manageToursText') }}</p>
             </div>
+            <button class="secondary-btn" type="button" (click)="resetTourForm()">
+              {{ i18n.t('admin.newTour') }}
+            </button>
+          </div>
 
-            <div class="booking-meta">
-              <span>{{ i18n.t('profile.bookingDate') }}: {{ booking.travelDate | date: 'mediumDate' }}</span>
-              <span>{{ i18n.t('profile.createdAt') }}: {{ booking.createdAt | date: 'mediumDate' }}</span>
-              <span>{{ i18n.t('booking.travelers') }}: {{ booking.travelers }}</span>
-            </div>
+          <form class="field-grid admin-form" (ngSubmit)="submitTour()">
+            <label>
+              {{ i18n.t('admin.title') }}
+              <input type="text" name="title" [(ngModel)]="tourForm.title" required />
+            </label>
 
-            @if (booking.status !== 'cancelled') {
-              <button
-                class="secondary-btn"
-                type="button"
-                (click)="cancelBooking(booking.id)"
-                [disabled]="activeBookingId() === booking.id"
-              >
+            <label>
+              {{ i18n.t('admin.slug') }}
+              <input type="text" name="slug" [(ngModel)]="tourForm.slug" required />
+            </label>
+
+            <label>
+              {{ i18n.t('admin.destinationName') }}
+              <input type="text" name="destination_name" [(ngModel)]="tourForm.destination_name" />
+            </label>
+
+            <label>
+              {{ i18n.t('admin.destinationDescription') }}
+              <input type="text" name="destination_description" [(ngModel)]="tourForm.destination_description" />
+            </label>
+
+            <label>
+              {{ i18n.t('admin.regionKey') }}
+              <input type="text" name="region_key" [(ngModel)]="tourForm.region_key" required />
+            </label>
+
+            <label>
+              {{ i18n.t('admin.seasonKey') }}
+              <input type="text" name="season_key" [(ngModel)]="tourForm.season_key" required />
+            </label>
+
+            <label>
+              {{ i18n.t('admin.departureCity') }}
+              <input type="text" name="departure_city" [(ngModel)]="tourForm.departure_city" required />
+            </label>
+
+            <label>
+              {{ i18n.t('admin.durationText') }}
+              <input type="text" name="duration_text" [(ngModel)]="tourForm.duration_text" required />
+            </label>
+
+            <label>
+              {{ i18n.t('admin.price') }}
+              <input type="number" min="0" step="1000" name="price" [(ngModel)]="tourForm.price" required />
+            </label>
+
+            <label>
+              {{ i18n.t('admin.rating') }}
+              <input type="number" min="0" max="5" step="0.1" name="rating" [(ngModel)]="tourForm.rating" required />
+            </label>
+
+            <label>
+              {{ i18n.t('admin.heroLabel') }}
+              <input type="text" name="hero_label" [(ngModel)]="tourForm.hero_label" required />
+            </label>
+
+            <label>
+              {{ i18n.t('admin.imageUrl') }}
+              <input
+                type="text"
+                name="image_url"
+                [(ngModel)]="tourForm.image_url"
+                placeholder="/images/tours/charyn-canyon.jpg"
+              />
+            </label>
+
+            <label class="wide-field">
+              {{ i18n.t('admin.summary') }}
+              <textarea name="summary" rows="4" [(ngModel)]="tourForm.summary"></textarea>
+            </label>
+
+            <label class="checkbox-field">
+              <input type="checkbox" name="popular" [(ngModel)]="tourForm.popular" />
+              {{ i18n.t('admin.popular') }}
+            </label>
+
+            <label class="checkbox-field">
+              <input type="checkbox" name="is_published" [(ngModel)]="tourForm.is_published" />
+              {{ i18n.t('admin.published') }}
+            </label>
+
+            <div class="filter-actions wide-field">
+              <button class="primary-btn" type="submit" [disabled]="savingTour()">
                 {{
-                  activeBookingId() === booking.id
-                    ? i18n.t('profile.cancelLoading')
-                    : i18n.t('profile.cancel')
+                  savingTour()
+                    ? i18n.t('admin.saving')
+                    : tourForm.id
+                      ? i18n.t('admin.saveChanges')
+                      : i18n.t('admin.createTour')
                 }}
               </button>
+              <button class="secondary-btn" type="button" (click)="resetTourForm()">
+                {{ i18n.t('admin.clearForm') }}
+              </button>
+            </div>
+          </form>
+        </section>
+
+        <section class="section-card admin-section">
+          <h2>{{ i18n.t('admin.currentTours') }}</h2>
+          <div class="booking-list">
+            @for (tour of adminTours(); track tour.id) {
+              <article class="booking-card section-card compact-card">
+                <div class="booking-top">
+                  <div>
+                    <h3>{{ tour.title }}</h3>
+                    <p>{{ tour.destination.name }} · {{ tour.slug }}</p>
+                  </div>
+                  <strong>{{ tour.price | number }} ₸</strong>
+                </div>
+
+                <div class="booking-meta">
+                  <span>{{ i18n.t('admin.bookingsCount') }}: {{ tour.bookingsCount }}</span>
+                  <span>
+                    {{ i18n.t('admin.status') }}:
+                    {{ tour.isPublished ? i18n.t('admin.publishedValue') : i18n.t('admin.draftValue') }}
+                  </span>
+                  <span>{{ i18n.t('admin.owner') }}: {{ tour.owner.email }}</span>
+                </div>
+
+                <div class="card-actions">
+                  <button class="secondary-btn" type="button" (click)="editTour(tour)">
+                    {{ i18n.t('admin.edit') }}
+                  </button>
+                  <button
+                    class="secondary-btn danger-btn"
+                    type="button"
+                    (click)="deleteTour(tour.id)"
+                    [disabled]="deletingTourId() === tour.id"
+                  >
+                    {{ deletingTourId() === tour.id ? i18n.t('admin.deleting') : i18n.t('admin.delete') }}
+                  </button>
+                </div>
+              </article>
             }
-          </article>
-        }
-      </div>
-    } @else {
-      <div class="section-card empty-card">
-        <p class="section-text">{{ i18n.t('profile.empty') }}</p>
-      </div>
+          </div>
+        </section>
+
+        <section class="section-card admin-section">
+          <h2>{{ i18n.t('admin.users') }}</h2>
+          <div class="user-grid">
+            @for (user of adminUsers(); track user.id) {
+              <article class="user-card">
+                <strong>{{ user.email || user.username }}</strong>
+                <span>{{ i18n.t('admin.role') }}: {{ user.role }}</span>
+                <span>{{ i18n.t('admin.ownedTours') }}: {{ user.ownedTours.length }}</span>
+                <span>{{ i18n.t('admin.userBookings') }}: {{ user.bookedTours.length }}</span>
+              </article>
+            }
+          </div>
+        </section>
+      }
+
+      @if (bookings().length) {
+        <section class="section-card admin-section">
+          <h2>{{ i18n.t('admin.myBookings') }}</h2>
+          <div class="booking-list">
+            @for (booking of bookings(); track booking.id) {
+              <article class="booking-card section-card">
+                <div class="booking-top">
+                  <div>
+                    <h3>{{ i18n.localize(booking.tourName) }}</h3>
+                    <p>{{ i18n.t('status.' + booking.status) }}</p>
+                  </div>
+                  <strong>{{ booking.totalPrice | number }} ₸</strong>
+                </div>
+
+                <div class="booking-meta">
+                  <span>{{ i18n.t('profile.bookingDate') }}: {{ booking.travelDate | date: 'mediumDate' }}</span>
+                  <span>{{ i18n.t('profile.createdAt') }}: {{ booking.createdAt | date: 'mediumDate' }}</span>
+                  <span>{{ i18n.t('booking.travelers') }}: {{ booking.travelers }}</span>
+                </div>
+
+                @if (booking.status !== 'cancelled') {
+                  <button
+                    class="secondary-btn"
+                    type="button"
+                    (click)="cancelBooking(booking.id)"
+                    [disabled]="activeBookingId() === booking.id"
+                  >
+                    {{
+                      activeBookingId() === booking.id
+                        ? i18n.t('profile.cancelLoading')
+                        : i18n.t('profile.cancel')
+                    }}
+                  </button>
+                }
+              </article>
+            }
+          </div>
+        </section>
+      } @else {
+        <div class="section-card empty-card">
+          <p class="section-text">{{ i18n.t('profile.empty') }}</p>
+        </div>
+      }
     }
   </div>
 </section>

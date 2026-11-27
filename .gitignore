@@ -42,3 +42,10 @@ __screenshots__/
 # System files
 .DS_Store
 Thumbs.db
+
+# Django and local API credentials
+__pycache__/
+*.py[cod]
+travel_backend/db.sqlite3
+travel_backend/.env
+.venv/

@@ -1,8 +1,6 @@
-.login-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, .78fr); gap: 22px; max-width: 940px; margin: clamp(12px, 5vh, 56px) auto; }
-.login-card, .hint-card { padding: clamp(22px, 4vw, 38px); }
-.login-card { display: grid; align-content: start; gap: 16px; }
+.login-layout { display: flex; justify-content: center; max-width: 720px; margin: clamp(12px, 5vh, 56px) auto; }
+.login-card { display: grid; align-content: start; gap: 16px; width: min(520px, 100%); padding: clamp(22px, 4vw, 38px); }
 .login-card h1 { font-size: clamp(26px, 3vw, 34px); }
-.hint-card { display: grid; align-content: start; gap: 13px; background: #edf3eb; box-shadow: none; }
-.hint-card h2 { margin: 0; color: var(--color-ink); font-size: 18px; }
-.hint-card ul { display: grid; gap: 12px; margin: 2px 0 0; padding-left: 18px; color: #52645c; font-size: 13px; line-height: 1.55; overflow-wrap: anywhere; }
-@media (max-width: 760px) { .login-layout { grid-template-columns: 1fr; margin: 10px auto; } }
+.mode-switch { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; padding: 5px; border-radius: 12px; background: var(--color-surface-muted); }
+.mode-btn { min-height: 40px; border: 0; border-radius: 9px; background: transparent; color: var(--color-muted); font-weight: 700; cursor: pointer; }
+.mode-btn-active { background: var(--color-surface); color: var(--color-primary); box-shadow: 0 2px 7px rgb(28 49 40 / 10%); }
